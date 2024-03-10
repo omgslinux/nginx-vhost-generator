@@ -1,0 +1,3 @@
+SUFFIX=""
+LOGDIR="/var/log/nginx/$vhost"
+
