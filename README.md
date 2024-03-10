@@ -9,6 +9,7 @@ Installation
 
 * Clone the repository anywhere and copy the skeleton at the same level that /etc/nginx,
 so there's a new directory.
+* Copy the sslclient-fastcgi.conf file to the snippets dir
 * Duplicate the defaults.inc_dist and name it defaults.inc. Set any defaults for your needs, theorically
 common variables for most (or all) sites
 * Check the example directory with its .inc file. Use it as template for your vhosts, modifying the values
