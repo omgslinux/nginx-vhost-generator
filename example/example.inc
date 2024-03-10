@@ -4,8 +4,13 @@ DOCROOT="/var/www/vhosts/${SERVER}" # The vhost document root
 HTTP_PORT="80" # Port for http request
 HTTP_REDIRECT="" # Set any value to force redirect http to https
 HTTP_ENV="dev" # For symfony, set the value for $APP_ENV when using http
-HTTPS_PORT="8080" # Port for https
+HTTPS_PORT="443" # Port for https
 HTTPS_ENV="prod" # For symfony, set the value for $APP_ENV when using https
+CERTS="
+    # Server certificate and key
+    ssl_certificate /etc/letsencrypt/live/${SERVER}.${SUFFIX}/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/${SERVER}.${SUFFIX}/privkey.pem;
+" # Usual setup for letsencrypt
 SSLCLIENT_FASTCGI="" # Set to any value for using fastcgi and client certificates
 SSLCLIENT_VERIFY="
     ssl_client_certificate /etc/ssl/private/MyCA/CA.pem;
