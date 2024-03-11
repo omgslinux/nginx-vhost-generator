@@ -131,14 +131,15 @@ function writeBlocks()
 for VHOST in $@;do
 	if [[ -d ${VHOST} ]];then
 		initVars
-        . defaults.inc
+		. defaults.inc
 		VHOST_TYPE=""
-        for VHOSTFILE in $VHOST/*.inc;do
-    		. ${VHOSTFILE}
-        done
+		for VHOSTFILE in $VHOST/*.inc;do
+			. ${VHOSTFILE}
+		done
 		if [[ ${VHOST_TYPE} ]];then
 			TEMPLATE_FILE="_templates/${VHOST_TYPE}_template.inc"
 			if [[ -f ${TEMPLATE_FILE} ]];then
+				. ${TEMPLATE_FILE}
 				LOGDIR="/var/log/nginx/${SERVER}.${SUFFIX}"
 				processServers
 				writeBlocks
