@@ -33,8 +33,8 @@ server {
     root ${DOCROOT};
     charset utf-8;
 
-    error_log ${LOGDIR}/${SERVER}_error.log;
-    access_log ${LOGDIR}/${SERVER}_access.log;
+    error_log ${LOGDIR}/${SERVER}${SSL_BLOCK:+ssl}_error.log;
+    access_log ${LOGDIR}/${SERVER}${SSL_BLOCK:+ssl}_access.log;
 
     ${APP_ENV}
 
