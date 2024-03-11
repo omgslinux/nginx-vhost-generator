@@ -136,11 +136,11 @@ for VHOST in $@;do
         for VHOSTFILE in $VHOST/*.inc;do
     		. ${VHOSTFILE}
         done
-		if [[ ${VHOST_TYPE }]];then
+		if [[ ${VHOST_TYPE} ]];then
 			TEMPLATE_FILE="_templates/${VHOST_TYPE}_template.inc"
 			if [[ -f ${TEMPLATE_FILE} ]];then
 				LOGDIR="/var/log/nginx/${SERVER}.${SUFFIX}"
-		        processServers
+				processServers
 				writeBlocks
 
 				rm ../sites-enabled/${SERVER} 2>/dev/null
