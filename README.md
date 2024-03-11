@@ -4,17 +4,21 @@ Bash scripts for generating config files for vhosts for nginx
 These scripts intend to generate vhost config files, along with the links and log stuff
 to have a kind of automated vhost generator for nginx.
 
+The scenario is that you may want to have a site and have the chance to access via http and/or https,
+and you find somehow hard to write, copy, etc new config from existing (or not) any other config file,
+together with copying/pasting and other tasks that are error prone. So, you just have to define the necessary
+parameters for the config files to be automatically generated for you.
+
 Installation
 ============
 
 * Clone the repository anywhere and copy the skeleton at the same level that /etc/nginx,
-so there's a new directory.
-* Copy the sslclient-fastcgi.conf file to the snippets dir. Optionally, take a look at the php.conf and symfony.conf
-files, and copy them to conf.d for these scripts to work out-of-the box. You can then suit them to your needs.
-* Duplicate the defaults.inc_dist and name it defaults.inc. Set any defaults for your needs, theorically
+so there's a new directory in that tree.
+* Copy the sslclient-fastcgi.conf file into the snippets dir. Optionally, take a look at the supplied php.conf and symfony.conf
+files, and copy them to conf.d for the symfony scripts to work out-of-the box. You can then suit them to your needs.
+* Duplicate the defaults.inc_dist file and name it defaults.inc. Set any defaults for your needs, theorically
 common variables for most (or all) sites
-* Check the example directory with its .inc file. Use it as template for your vhosts, modifying the values
-for your host:
+* Check the _examples directory. You can use any of the files as template for your vhosts, modifying the values, like these:
 
 ```
 SERVER="example" # Vhost used name
@@ -38,11 +42,12 @@ SSLCLIENT_VERIFY="
 #SSLCLIENT_VERIFY ="" # Uncomment this line if you don't use CA verification
 ```
 
-* Currently, the most used template is for symfony >4.x (i.e. root is public/ directory). Other webapps (nextcloud, etc)
-will come, but PRs are welcome.
-* When you are finished, you can run ./mkvhost.sh <dir>, which will:
+* DO NOT FORGET to set the correct VHOST_TYPE in your file
+* Currently, the most used template is for symfony >4.x (i.e. webroot is public/ directory). Other webapps and configs
+(nextcloud, wordpress, etc) will come. PRs are also welcome.
+* When you are finished, you can generate the config file by running ./mkvhost.sh <dir>, which will:
     * Include any .inc file inside <dir>
-    * Create/update the config file in ../sites-available, for both HTTP and HTTPS in the same file
+    * Create/Overwrite the config file in ../sites-available, for both HTTP and HTTPS in the same file
     * Remove and recreate the symlink in ../sites-enabled
     * Create the specific ${LOGDIR} if it doesn't exist
-* You can manually check the file, together with nginx -t to see if there's something wrong.
+* You can now manually check the generated config file, together with nginx -t to see if there's something wrong.
