@@ -1,6 +1,4 @@
-!*.sh
-!*.template
-./*
-!/_*/
+**/
+!_*/
 defaults.inc
 *.bak
