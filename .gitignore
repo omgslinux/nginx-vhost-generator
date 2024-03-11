@@ -1,6 +1,6 @@
 !*.sh
 !*.template
 ./*
-!/example/
+!/_*/
 defaults.inc
 *.bak

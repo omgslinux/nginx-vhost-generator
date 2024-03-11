@@ -115,28 +115,42 @@ server {
     #HTTPS_BLOCK="${_HTTPS_BLOCK}"
 }
 
+function writeBlocks()
+{
+	# This block moved to a function for proper indenting out of main for loop
+	echo "# Generated http server block for ${VHOST} site
+	${HTTP_BLOCK}
+
+	# Generated https server block for ${VHOST} site
+	${HTTPS_BLOCK}">../sites-available/${SERVER}
+	if [ ! -d ${LOGDIR} ];then
+		mkdir -p ${LOGDIR}
+	fi
+}
 
 for VHOST in $@;do
 	if [[ -d ${VHOST} ]];then
 		initVars
         . defaults.inc
+		VHOST_TYPE=""
         for VHOSTFILE in $VHOST/*.inc;do
     		. ${VHOSTFILE}
         done
-		LOGDIR="/var/log/nginx/${SERVER}.${SUFFIX}"
-        processServers
+		if [[ ${VHOST_TYPE }]];then
+			TEMPLATE_FILE="_templates/${VHOST_TYPE}_template.inc"
+			if [[ -f ${TEMPLATE_FILE} ]];then
+				LOGDIR="/var/log/nginx/${SERVER}.${SUFFIX}"
+		        processServers
+				writeBlocks
 
-		echo "# Generated http server block for ${VHOST} site
-        ${HTTP_BLOCK}
-
-# Generated https server block for ${VHOST} site
-		${HTTPS_BLOCK}">../sites-available/${SERVER}
-		if [ ! -d ${LOGDIR} ];then
-			mkdir -p ${LOGDIR}
+				rm ../sites-enabled/${SERVER} 2>/dev/null
+				ln -s ../sites-available/${SERVER} ../sites-enabled/${SERVER}
+				echo "Vhost ${VHOST} created, along with ${LOGDIR} and site-enabled symlink"
+			else
+				echo "Invalid VHOST_TYPE for ${VHOST}. Choose one of _templates/<VHOST_TYPE>_template.inc"
+			fi
+		else
+			echo "No VHOST_TYPE variable in $VHOST"
 		fi
-
-		rm ../sites-enabled/${SERVER} 2>/dev/null
-		ln -s ../sites-available/${SERVER} ../sites-enabled/${SERVER}
-		echo "Vhost ${VHOST} created, along with ${LOGDIR} and site-enabled symlink"
 	fi
 done

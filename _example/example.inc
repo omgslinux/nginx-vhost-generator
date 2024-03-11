@@ -19,10 +19,10 @@ SSLCLIENT_VERIFY="
 #SSLCLIENT_VERIFY ="" # Uncomment this line if you don't use CA verification
 
 
-
-
+# Here define one of _templates/*_template.inc
+VHOST_TYPE="symfony"
 # Here just include the template
-. symfony_common.conf_template
+#. symfony_common.conf_template
 
 # Final assign the result to $CUSTOM_BLOCK variable
-CUSTOM_BLOCK="${SYMFONY_BLOCK}"
+#CUSTOM_BLOCK="${SYMFONY_BLOCK}"
