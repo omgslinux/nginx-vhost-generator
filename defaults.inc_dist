@@ -4,3 +4,14 @@ CERTS="
     ssl_certificate /etc/letsencrypt/live/${VHOST}.${SUFFIX}/fullchain.pem;
     ssl_certificate_key /etc/letsencrypt/live/${VHOST}.${SUFFIX}/privkey.pem;
 " # Usual setup for letsencrypt
+
+getLogDirFormat()
+{
+    # You can set a custom format per vhost, so lets check that
+    if [[ -z ${LOGDIRFORMAT} ]];then
+        # Set the format for log directory, called after vhost parsing
+        LOGDIRFORMAT="${SERVER}.${SUFFIX}"
+        # Another chance
+        #LOGDIRFORMAT="${SUFFIX}/${SERVER}"
+    fi
+}

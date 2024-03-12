@@ -1,6 +1,5 @@
 # Template for a proxy. Use this when you have a frontend and just need to use a proxy_pass to an upstream backend
 VHOST_TYPE="proxy"
-#. proxy_common.conf_template
 
 SERVER="proxy" # Vhost used name
 SUFFIX="example.org" # Suffix to add to ${SERVER} to have a FQDN
