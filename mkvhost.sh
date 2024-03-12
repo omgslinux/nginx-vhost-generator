@@ -4,23 +4,41 @@ if [[ -z $@ ]];then exit 1; fi
 
 function initVars()
 {
-    SERVER=""
-    SUFFIX=""
-    DOCROOT=""
-    HTTP_PORT=""
-    HTTP_ENV=""
-    HTTPS_PORT=""
-    HTTPS_ENV=""
-    APP_ENV=""
-    REDIRECT_BLOCK=""
-    SSLCLIENT_FASTCGI=""
-    SSLCERT_VERIFY=""
-    SERVER_BLOCK=""
-    HTTP_BLOCK=""
-    HTTPS_BLOCK=""
-    SSL_BLOCK=""
-    CUSTOM_BLOCK=""
-    PROXY_PASS=""
+	# Variables to be unset at the beginning of each vhost. You can set vhost defaults in defaults.inc
+	unset SERVER SUFFIX DOCROOT HTTP_PORT HTTP_ENV HTTPS_PORT HTTPS_ENV APP_ENV VHOST_TYPE
+	unset SSL_BLOCK CUSTOM_BLOCK PROXY_PASS SSLCLIENT_FASTCGI SSLCERT_VERIFY SERVER_BLOCK LOGDIRFORMAT
+}
+
+function main()
+{
+	for VHOST in $@;do
+		if [[ -d ${VHOST} ]];then
+			initVars
+			. defaults.inc
+			for VHOSTFILE in ${VHOST}/*.inc;do
+				. ${VHOSTFILE}
+			done
+			if [[ ${VHOST_TYPE} ]];then
+				TEMPLATE_FILE="_templates/${VHOST_TYPE}_template.inc"
+				if [[ -f ${TEMPLATE_FILE} ]];then
+					. ${TEMPLATE_FILE}
+					getLogDirFormat
+					LOGDIR="/var/log/nginx/${LOGDIRFORMAT:-${SERVER}.${SUFFIX}}"
+					processServers
+					writeBlocks
+
+					rm ../sites-enabled/${SERVER} 2>/dev/null
+					ln -s ../sites-available/${SERVER} ../sites-enabled/${SERVER}
+					echo "Vhost ${VHOST} created, along with ${LOGDIR} and site-enabled symlink"
+				else
+					echo "Invalid VHOST_TYPE for ${VHOST}. Choose one of _templates/<VHOST_TYPE>_template.inc"
+				fi
+			else
+				echo "No VHOST_TYPE variable set in ${VHOST}"
+			fi
+		fi
+	done
+
 }
 
 function processServerBlock()
@@ -128,30 +146,5 @@ function writeBlocks()
 	fi
 }
 
-for VHOST in $@;do
-	if [[ -d ${VHOST} ]];then
-		initVars
-		. defaults.inc
-		VHOST_TYPE=""
-		for VHOSTFILE in $VHOST/*.inc;do
-			. ${VHOSTFILE}
-		done
-		if [[ ${VHOST_TYPE} ]];then
-			TEMPLATE_FILE="_templates/${VHOST_TYPE}_template.inc"
-			if [[ -f ${TEMPLATE_FILE} ]];then
-				. ${TEMPLATE_FILE}
-				LOGDIR="/var/log/nginx/${SERVER}.${SUFFIX}"
-				processServers
-				writeBlocks
 
-				rm ../sites-enabled/${SERVER} 2>/dev/null
-				ln -s ../sites-available/${SERVER} ../sites-enabled/${SERVER}
-				echo "Vhost ${VHOST} created, along with ${LOGDIR} and site-enabled symlink"
-			else
-				echo "Invalid VHOST_TYPE for ${VHOST}. Choose one of _templates/<VHOST_TYPE>_template.inc"
-			fi
-		else
-			echo "No VHOST_TYPE variable in $VHOST"
-		fi
-	fi
-done
+main $@

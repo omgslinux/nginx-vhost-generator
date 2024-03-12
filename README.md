@@ -43,6 +43,8 @@ SSLCLIENT_VERIFY="
 ```
 
 * DO NOT FORGET to set the correct VHOST_TYPE in your file
+* You can set the $LOGDIRFORMAT to something different to ${SERVER}.${SUFFIX}, like ${SUFFIX}/${SERVER}. You can do
+this by modifying the variable in getLogDirFormat function in defaults.inc, or define LOGDIRFORMAT in single vhosts.
 * Currently, the most used template is for symfony >4.x (i.e. webroot is public/ directory). Other webapps and configs
 (nextcloud, wordpress, etc) will come. PRs are also welcome.
 * When you are finished, you can generate the config file by running ./mkvhost.sh <dir>, which will:
