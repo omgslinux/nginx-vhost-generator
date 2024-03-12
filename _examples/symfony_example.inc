@@ -14,18 +14,12 @@ HTTPS_PORT="443" # Port for https
 HTTPS_ENV="prod" # For symfony, set the value for $APP_ENV when using https
 
 # Usual setup for letsencrypt
-CERTS="
-    # Server certificate and key
-    ssl_certificate /etc/letsencrypt/live/${SERVER}.${SUFFIX}/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/${SERVER}.${SUFFIX}/privkey.pem;
-"
+SERVER_CERT_PATH="/etc/letsencrypt/live/${SERVER}.${SUFFIX}/fullchain.pem"
+SERVER_KEY_PATH="/etc/letsencrypt/live/${SERVER}.${SUFFIX}/privkey.pem"
 
-SSLCLIENT_VERIFY="
-    ssl_client_certificate /etc/ssl/private/CA.pem;
-    ssl_verify_client optional;
-" # The specific lines for CA certificate and client verification level in config file.
-# Uncomment this line if you don't use CA verification, so it overwrites the above
-#SSLCLIENT_VERIFY =""
+# The specific lines for CA certificate and client verification level in config file.
+SSL_CLIENT_CERTIFICATE="/etc/ssl/private/CA.pem"
+SSL_VERIFY_CLIENT="optional"
 
 # Set to any value for using fastcgi and client certificates.
 # This will allow your app to check the client certificate validation process
