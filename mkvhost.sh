@@ -29,7 +29,7 @@ function main()
 					writeBlocks
 
 					rm ../sites-enabled/${SERVER} 2>/dev/null
-					ln -s ../sites-available/${SERVER} ../sites-enabled/${SERVER}
+					ln -s ../sites-available/${SERVER} ../sites-enabled/
 					echo "Vhost ${VHOST} created, along with ${LOGDIR} and site-enabled symlink"
 				else
 					echo "Invalid VHOST_TYPE for ${VHOST}. Choose one of _templates/<VHOST_TYPE>_template.inc"
