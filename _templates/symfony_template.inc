@@ -1,12 +1,6 @@
-#SSLCLIENT_FASTCGI=1
-if [[ ${SSLCLIENT_FASTCGI} ]];then
-	SSLCLIENT_FASTCGI_BLOCK="
-	include snippets/sslclient-fastcgi.conf;
-	";
-fi
 
 SYMFONY_BLOCK="
-    # BEGIN SYMFONY BLOCK
+    ### BEGIN SYMFONY BLOCK
 
     # Add index.php to the list if you are using PHP
     index index.php;
@@ -20,7 +14,8 @@ SYMFONY_BLOCK="
         fastcgi_pass \$upstream_php;
         include snippets/fastcgi-php.conf;
         fastcgi_param APP_ENV \$app_env;
-	${SSLCLIENT_FASTCGI_BLOCK}
+
+		${SSLCLIENT_FASTCGI:+include snippets/sslclient-fastcgi.conf;}
 
     }
 
@@ -36,7 +31,7 @@ SYMFONY_BLOCK="
     location ~ /\.ht {
         deny all;
     }
-    # END OF SYMFONY BLOCK
+    ### END OF SYMFONY BLOCK
 "
 
 CUSTOM_BLOCK="${SYMFONY_BLOCK}"

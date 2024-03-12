@@ -1,8 +1,5 @@
-if [[ ${SSL_CLIENT} ]];then
-    PROXY_SSL_CLIENT="include snippets/proxy_ssl_client-upstream.conf;"
-fi
 PROXY_BLOCK="
-    # BEGIN PROXY BLOCK
+    ### BEGIN PROXY BLOCK
 
     add_header Strict-Transport-Security \"max-age=15552000; includeSubDomains\" always;
     add_header Pragma \"no-cache\";
@@ -19,10 +16,11 @@ PROXY_BLOCK="
     location / {
         proxy_pass ${PROXY_PASS};
         include proxy_params;
-        ${PROXY_SSL_CLIENT}
         proxy_buffering off;
+
+		${SSLCLIENT_FASTCGI:+include snippets/sslclient-fastcgi.conf;}
     }
 
-    # END OF PROXY BLOCK
+    ### END OF PROXY BLOCK
 "
 CUSTOM_BLOCK="${PROXY_BLOCK}"

@@ -29,17 +29,18 @@ HTTP_REDIRECT="" # Set any value to force redirect http to https
 HTTP_ENV="dev" # For symfony, set the value for $APP_ENV when using http
 HTTPS_PORT="443" # Port for https
 HTTPS_ENV="prod" # For symfony, set the value for $APP_ENV when using https
-CERTS="
-    # Server certificate and key
-    ssl_certificate /etc/letsencrypt/live/${SERVER}.${SUFFIX}/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/${SERVER}.${SUFFIX}/privkey.pem;
-" # Usual setup for letsencrypt
-SSLCLIENT_FASTCGI="" # Set to any value for using fastcgi and client certificates
-SSLCLIENT_VERIFY="
-    ssl_client_certificate /etc/ssl/private/MyCA/CA.pem;
-    ssl_verify_client optional;
-" # The specific lines for CA certificate and client verification level in config file.
-#SSLCLIENT_VERIFY ="" # Uncomment this line if you don't use CA verification
+
+# Usual setup for letsencrypt
+SSL_CERTIFICATE="/etc/letsencrypt/live/${VHOST}.${SUFFIX}/fullchain.pem"
+SSL_CERTIFICATE_KEY="/etc/letsencrypt/live/${VHOST}.${SUFFIX}/privkey.pem"
+
+# The specific lines for CA certificate and client verification level in config file.
+SSL_CLIENT_CERTIFICATE="/etc/ssl/private/CA.pem"
+SSL_VERIFY_CLIENT="optional"
+
+# Set to any value for using fastcgi and client certificates.
+# This will allow your app to check the client certificate validation process
+SSLCLIENT_FASTCGI=""
 ```
 
 * DO NOT FORGET to set the correct VHOST_TYPE in your file
@@ -48,6 +49,7 @@ this by modifying the LOGDIRFORMAT variable in getLogDirFormat function in defau
 The directory for logs will be /var/log/nginx/$LOGDIRFORMAT.
 * Currently, the most used template is for symfony >4.x (i.e. webroot is public/ directory). Other webapps and configs
 (nextcloud, wordpress, etc) will come. PRs are also welcome.
+* If ${SSL_CERTIFICATE} is empty or not set, there will be no https block
 * When you are finished, you can generate the config file by running ./mkvhost.sh <dir>, which will:
     * Include any .inc file inside <dir>
     * Create/Overwrite the config file in ../sites-available, for both HTTP and HTTPS in the same file

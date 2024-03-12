@@ -6,7 +6,8 @@ function initVars()
 {
 	# Variables to be unset at the beginning of each vhost. You can set vhost defaults in defaults.inc
 	unset SERVER SUFFIX DOCROOT HTTP_PORT HTTP_ENV HTTPS_PORT HTTPS_ENV APP_ENV VHOST_TYPE
-	unset SSL_BLOCK CUSTOM_BLOCK PROXY_PASS SSLCLIENT_FASTCGI SSLCERT_VERIFY SERVER_BLOCK LOGDIRFORMAT
+	unset SSL_BLOCK CUSTOM_BLOCK PROXY_PASS SSLCLIENT_FASTCGI SERVER_BLOCK
+	unset LOGDIRFORMAT SSL_CERTIFICATE SSL_CERTIFICATE_KEY SSL_CLIENT_CERTIFICATE SSL_VERIFY_CLIENT
 }
 
 function main()
@@ -82,7 +83,7 @@ server {
     server_tokens off;
     return 301 https://\$server_name:${HTTPS_PORT}/\$request_uri;
 }
-    "
+"
 
     LISTEN_HTTP_BLOCK="
     listen ${HTTP_PORT};
@@ -103,34 +104,38 @@ server {
     else
         HTTP_BLOCK="${SERVER_BLOCK}"
     fi
-    APP_ENV=""
-    if [[ ${HTTPS_ENV} ]];then
-        APP_ENV="set \$app_env ${HTTPS_ENV};"
-    fi
+    unset APP_ENV
+	if [[ ${SSL_CERTIFICATE} ]];then
+	    if [[ ${HTTPS_ENV} ]];then
+	        APP_ENV="set \$app_env ${HTTPS_ENV};"
+	    fi
 
 
-    LISTEN_BLOCK="${LISTEN_HTTPS_BLOCK}"
-    SSL_BLOCK="
-    # BEGIN SSL_BLOCK
-    add_header Strict-Transport-Security \"max-age=31536000;\";
-    add_header Pragma \"no-cache\";
-    add_header Cache-Control \"private, max-age=0, no-cache, no-store\";
+	    LISTEN_BLOCK="${LISTEN_HTTPS_BLOCK}"
+	    SSL_BLOCK="
+	    # BEGIN SSL_BLOCK
+	    add_header Strict-Transport-Security \"max-age=31536000;\";
+	    add_header Pragma \"no-cache\";
+	    add_header Cache-Control \"private, max-age=0, no-cache, no-store\";
 
-    # BEGIN CERT BLOCK
-    ${CERTS}
-    ${SSLCLIENT_VERIFY}
-    # END CERT BLOCK
+	    # BEGIN CERT BLOCK
+		${SSL_CERTIFICATE:+ssl_certificate ${SSL_CERTIFICATE};}
+		${SSL_CERTIFICATE_KEY:+ssl_certificate_key ${SSL_CERTIFICATE_KEY};}
+		${SSL_CLIENT_CERTIFICATE:+ssl_client_certificate ${SSL_CLIENT_CERTIFICATE};}
+		${SSL_VERIFY_CLIENT:+ssl_verify_client ${SSL_VERIFY_CLIENT};}
+	    # END CERT BLOCK
 
-    ssl_protocols        TLSv1 TLSv1.1 TLSv1.2;
-    keepalive_timeout    70;
-    ssl_session_cache    shared:SSL:10m;
-    ssl_session_timeout  10m;
-    # END SSL_BLOCK
-"
+	    ssl_protocols        TLSv1 TLSv1.1 TLSv1.2;
+	    keepalive_timeout    70;
+	    ssl_session_cache    shared:SSL:10m;
+	    ssl_session_timeout  10m;
+	    # END SSL_BLOCK
+	"
 
-    processServerBlock
-    HTTPS_BLOCK="${SERVER_BLOCK}"
-    #HTTPS_BLOCK="${_HTTPS_BLOCK}"
+	    processServerBlock
+	    HTTPS_BLOCK="${SERVER_BLOCK}"
+	    #HTTPS_BLOCK="${_HTTPS_BLOCK}"
+	fi
 }
 
 function writeBlocks()

@@ -8,18 +8,17 @@ HTTP_PORT="80" # Port for http request
 HTTP_REDIRECT="1" # Set any value to force redirect http to https
 HTTPS_PORT="443" # Port for https
 
-# Usual setup for letsencrypt certificates.
-CERTS="
-    # Server certificate and key
-    ssl_certificate /etc/letsencrypt/live/${SERVER}.${SUFFIX}/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/${SERVER}.${SUFFIX}/privkey.pem;
-"
+# Usual setup for letsencrypt
+SSL_CERTIFICATE="/etc/letsencrypt/live/${SERVER}.${SUFFIX}/fullchain.pem"
+SSL_CERTIFICATE_KEY="/etc/letsencrypt/live/${SERVER}.${SUFFIX}/privkey.pem"
+
 # The specific lines for CA certificate and client verification level in config file.
-SSLCLIENT_VERIFY="
-    ssl_client_certificate /etc/ssl/private/CA.pem;
-    ssl_verify_client optional;
-"
-#SSLCLIENT_VERIFY ="" # Uncomment this line to overwrite the above if you don't use CA verification
+SSL_CLIENT_CERTIFICATE="/etc/ssl/private/CA.pem"
+SSL_VERIFY_CLIENT="optional"
+
+# Set to any value for using fastcgi and client certificates.
+# This will allow your app to check the client certificate validation process
+SSLCLIENT_FASTCGI=""
 
 # Parameter for proxy_pass in / location. ONLY IN FRONTEND
 PROXY_PASS="192.168.55.105:8080"
