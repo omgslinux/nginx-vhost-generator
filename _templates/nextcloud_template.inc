@@ -125,6 +125,11 @@ NEXTCLOUD_BLOCK="
         index index.php;
     }
 
+    # Rule borrowed from .htaccess
+    location /remote {
+        return 301 /remote.php\$request_uri;
+    }
+
     ${STATICFILES_BLOCK}
     ${WOFF_BLOCK}
 "
