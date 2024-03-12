@@ -43,12 +43,13 @@ SSL_VERIFY_CLIENT="optional"
 SSLCLIENT_FASTCGI=""
 ```
 
+* Currently, the most used template is for symfony >4.x (i.e. webroot is public/ directory). There's also a proxy
+template to be used in frontend. Last news is a nextcloud template for backend. Other webapps and configs will come.
+The templates live in the _templates/ directory. PRs are also welcome.
 * DO NOT FORGET to set the correct VHOST_TYPE in your file
-* You can set the format for the log directory to something different to ${SERVER}.${SUFFIX}, like ${SUFFIX}/${SERVER}. You can do
-this by modifying the LOGDIRFORMAT variable in getLogDirFormat function in defaults.inc, or define LOGDIRFORMAT in single vhosts.
-The directory for logs will be /var/log/nginx/$LOGDIRFORMAT.
-* Currently, the most used template is for symfony >4.x (i.e. webroot is public/ directory). Other webapps and configs
-(nextcloud, wordpress, etc) will come. PRs are also welcome.
+* You can set the format for the log directory to something different to ${SERVER}.${SUFFIX}, like ${SUFFIX}/${SERVER}.
+You can do this by modifying the LOGDIRFORMAT variable in getLogDirFormat function in defaults.inc,
+or define LOGDIRFORMAT in single vhosts. The directory for logs will be /var/log/nginx/$LOGDIRFORMAT.
 * If ${SSL_CERTIFICATE} is empty or not set, there will be no https block
 * When you are finished, you can generate the config file by running ./mkvhost.sh <dir>, which will:
     * Include any .inc file inside <dir>
