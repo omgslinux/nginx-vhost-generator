@@ -48,7 +48,7 @@ function processServerBlock()
     SERVER_BLOCK="
 server {
     ${LISTEN_BLOCK}
-    server_name ${SERVER} ${SERVER}.${SUFFIX};
+    server_name ${SERVER}${SUFFIX:+ ${SERVER}.${SUFFIX}};
     root ${DOCROOT};
     charset utf-8;
 
@@ -146,7 +146,7 @@ function writeBlocks()
 	echo "# Generated http server block for ${VHOST} site
 	${HTTP_BLOCK}
 
-	# Generated https server block for ${VHOST} site
+	${HTTPS_BLOCK:+# Generated https server block for ${VHOST} site}
 	${HTTPS_BLOCK}">../sites-available/${SERVER}
 	if [ ! -d ${LOGDIR} ];then
 		mkdir -p ${LOGDIR}
