@@ -105,6 +105,27 @@ server {
         HTTP_BLOCK="${SERVER_BLOCK}"
     fi
     unset APP_ENV
+
+	SSL_BLOCK="
+	# BEGIN SSL_BLOCK
+	add_header Strict-Transport-Security \"max-age=31536000;\";
+	add_header Pragma \"no-cache\";
+	add_header Cache-Control \"private, max-age=0, no-cache, no-store\";
+
+	# BEGIN CERT BLOCK
+	${SSL_CERTIFICATE:+ssl_certificate ${SSL_CERTIFICATE};}
+	${SSL_CERTIFICATE_KEY:+ssl_certificate_key ${SSL_CERTIFICATE_KEY};}
+	${SSL_CLIENT_CERTIFICATE:+ssl_client_certificate ${SSL_CLIENT_CERTIFICATE};}
+	${SSL_VERIFY_CLIENT:+ssl_verify_client ${SSL_VERIFY_CLIENT};}
+	# END CERT BLOCK
+
+	ssl_protocols        TLSv1 TLSv1.1 TLSv1.2;
+	keepalive_timeout    70;
+	ssl_session_cache    shared:SSL:10m;
+	ssl_session_timeout  10m;
+	# END SSL_BLOCK
+"
+
 	if [[ ${SSL_CERTIFICATE} ]];then
 	    if [[ ${HTTPS_ENV} ]];then
 	        APP_ENV="set \$app_env ${HTTPS_ENV};"
@@ -112,25 +133,6 @@ server {
 
 
 	    LISTEN_BLOCK="${LISTEN_HTTPS_BLOCK}"
-	    SSL_BLOCK="
-	    # BEGIN SSL_BLOCK
-	    add_header Strict-Transport-Security \"max-age=31536000;\";
-	    add_header Pragma \"no-cache\";
-	    add_header Cache-Control \"private, max-age=0, no-cache, no-store\";
-
-	    # BEGIN CERT BLOCK
-		${SSL_CERTIFICATE:+ssl_certificate ${SSL_CERTIFICATE};}
-		${SSL_CERTIFICATE_KEY:+ssl_certificate_key ${SSL_CERTIFICATE_KEY};}
-		${SSL_CLIENT_CERTIFICATE:+ssl_client_certificate ${SSL_CLIENT_CERTIFICATE};}
-		${SSL_VERIFY_CLIENT:+ssl_verify_client ${SSL_VERIFY_CLIENT};}
-	    # END CERT BLOCK
-
-	    ssl_protocols        TLSv1 TLSv1.1 TLSv1.2;
-	    keepalive_timeout    70;
-	    ssl_session_cache    shared:SSL:10m;
-	    ssl_session_timeout  10m;
-	    # END SSL_BLOCK
-	"
 
 	    processServerBlock
 	    HTTPS_BLOCK="${SERVER_BLOCK}"
