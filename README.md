@@ -14,11 +14,12 @@ Installation
 
 * Clone the repository anywhere and copy the skeleton at the same level that /etc/nginx,
 so there's a new directory in that tree.
-* Copy the sslclient-fastcgi.conf file into the snippets dir. Optionally, take a look at the supplied php.conf and symfony.conf
-files, and copy them to conf.d for the symfony scripts to work out-of-the box. You can then suit them to your needs.
+* Copy the sslclient-fastcgi.conf file into the snippets dir. Optionally, take a look at the supplied *.conf files
+and copy them to conf.d for the symfony scripts to work out-of-the box. You can then suit them to your needs.
 * Duplicate the defaults.inc_dist file and name it defaults.inc. Set any defaults for your needs, theorically
 common variables for most (or all) sites
-* Check the _examples directory. You can use any of the files as template for your vhosts, modifying the values, like these:
+* Check the _examples directory. You can use any of the files as template for your vhosts
+by modifying and/or commenting unused (or inherited from your defaults.inc) values, like these:
 
 ```
 SERVER="example" # Vhost used name
@@ -43,17 +44,15 @@ SSL_VERIFY_CLIENT="optional"
 SSLCLIENT_FASTCGI=""
 ```
 
-* Currently, the most used template is for symfony >4.x (i.e. webroot is public/ directory). There's also a proxy
-template to be used in frontend. Last news is a nextcloud template for backend. Other webapps and configs will come.
-The templates live in the _templates/ directory. PRs are also welcome.
+* The templates live in the _templates/ directory. Other webapps and configs will come. PRs are also welcome.
 * DO NOT FORGET to set the correct VHOST_TYPE in your file
 * You can set the format for the log directory to something different to ${SERVER}.${SUFFIX}, like ${SUFFIX}/${SERVER}.
 You can do this by modifying the LOGDIRFORMAT variable in getLogDirFormat function in defaults.inc,
 or define LOGDIRFORMAT in single vhosts. The directory for logs will be /var/log/nginx/$LOGDIRFORMAT.
-* If ${SSL_CERTIFICATE} is empty or not set, there will be no https block
+* If SSL_CERTIFICATE is empty or not set, there will be no https block
 * When you are finished, you can generate the config file by running ./mkvhost.sh <dir>, which will:
     * Include any .inc file inside <dir>
     * Create/Overwrite the config file in ../sites-available, for both HTTP and HTTPS in the same file
     * Remove and recreate the symlink in ../sites-enabled
-    * Create the specific ${LOGDIR} if it doesn't exist
+    * Create the specific LOGDIR if it doesn't exist
 * You can now manually check the generated config file, together with nginx -t to see if there's something wrong.
