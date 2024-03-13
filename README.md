@@ -16,6 +16,8 @@ Installation
 so there's a new directory in that tree.
 * Copy the sslclient-fastcgi.conf file into the snippets dir. Optionally, take a look at the supplied *.conf files
 and copy them to conf.d for the symfony scripts to work out-of-the box. You can then suit them to your needs.
+* For php and fastcgi, try to update your nginx installation after copying, so $upstream_php points to
+the default php fastcgi to be used in fastcgi_pass by default in the php sites.
 * Duplicate the defaults.inc_dist file and name it defaults.inc. Set any defaults for your needs, theorically
 common variables for most (or all) sites
 * Check the _examples directory. You can use any of the files as template for your vhosts
