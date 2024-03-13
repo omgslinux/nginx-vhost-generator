@@ -4,6 +4,10 @@ if [[ ! -f ../conf.d/wordpress.conf ]];then
     cp -p wordpress.conf ../conf.d
 fi
 
+if [[ ! -f ../conf.d/upstream_php.conf ]];then
+    cp -p upstream_php.conf ../conf.d
+fi
+
 unset WORDPRESS_MULTISITE_SUBDIR_BLOCK WORDPPRESS_MULTISITE_SUBDOMAIN_BLOCK WORDPRESS_SINGLESITE_BLOCK
 
 if [[ ${WORDPRESS_SINGLESITE} ]];then

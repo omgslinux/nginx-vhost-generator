@@ -1,7 +1,10 @@
 # Taken from https://docs.nextcloud.com/server/28/admin_manual/installation/nginx.html
+# Let's make sure that the upstream_php definition is properly
+if [[ ! -f ../conf.d/upstream_php.conf ]];then
+    cp -p upstream_php.conf ../conf.d
+fi
 
-
-GZIP_BLOCK='
+GZIP_BLOCK="
     # Enable gzip but do not remove ETag headers
     gzip on;
     gzip_vary on;
@@ -11,7 +14,7 @@ GZIP_BLOCK='
     gzip_types application/atom+xml application/javascript application/json application/ld+json application/manifest+json application/rss+xml application/vnd.geo+\$
     son application/vnd.ms-fontobject application/x-font-ttf application/x-web-app-manifest+json application/xhtml+xml application/xml font/opentype image/bmp image/s\$
     g+xml image/x-icon text/cache-manifest text/css text/plain text/vcard text/vnd.rim.location.xloc text/vtt text/x-component text/x-cross-domain-policy;
-'
+"
 
 HEADERS_BLOCK='
     add_header Referrer-Policy                   "no-referrer"       always;
@@ -22,7 +25,7 @@ HEADERS_BLOCK='
     add_header X-XSS-Protection                  "1; mode=block"     always;
 '
 
-MIME_BLOCK='
+MIME_BLOCK="
     # Set .mjs and .wasm MIME types
     # Either include it in the default mime.types list
     # and include that list explicitly or add the file extension
@@ -33,15 +36,15 @@ MIME_BLOCK='
     #    application/wasm wasm;
     }
 
-'
+"
 
-ROBOTS_BLOCK='
+ROBOTS_BLOCK="
     location = /robots.txt {
         allow all;
         log_not_found off;
         access_log off;
     }
-'
+"
 
 STATICFILES_BLOCK="
     # Serve static files. This block must be AFTER the php handler block
@@ -53,21 +56,21 @@ STATICFILES_BLOCK="
 
 "
 
-WOFF_BLOCK='
-    location ~ \.woff2?$ {
-        try_files $uri /index.php$request_uri;
-        expires 7d;         # Cache-Control policy borrowed from `.htaccess`
-        access_log off;     # Optional: Don''t log access to assets
-    }
-'
-
-WEBFINGER_BLOCK='
+WEBFINGER_BLOCK="
     # The following 2 rules are only needed for the user_webfinger app.
     # Uncomment it if you are planning to use this app.
     #rewrite ^/.well-known/host-meta /public.php?service=host-meta last;
     #rewrite ^/.well-known/host-meta.json /public.php?service=host-meta-json
     # last;
-'
+"
+
+WOFF_BLOCK="
+    location ~ \.woff2?\$ {
+        try_files \$uri /index.php\$request_uri;
+        expires 7d;         # Cache-Control policy borrowed from `.htaccess`
+        access_log off;     # Optional: Don't log access to assets
+    }
+"
 
 NEXTCLOUD_BLOCK="
 
@@ -294,3 +297,5 @@ NEXTCLOUD_BLOCK2='
 '
 
 CUSTOM_BLOCK="${NEXTCLOUD_BLOCK}"
+
+unset GZIP_BLOCK HEADERS_BLOCK MIME_BLOCK ROBOTS_BLOCK STATICFILES_BLOCK WOFF_BLOCK

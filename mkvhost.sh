@@ -74,6 +74,16 @@ server {
 
 function processServers()
 {
+	DEFAULT_HTTP_PORT="80"
+	DEFAULT_HTTPS_PORT="443"
+	URL_HTTP_PORT=""
+	URL_HTTPS_PORT=""
+	if [[ ${DEFAULT_HTTP_PORT} != ${HTTP_PORT} ]];then
+		URL_HTTP_PORT=":${HTTP_PORT}"
+	fi
+	if [[ ${DEFAULT_HTTPS_PORT} != ${HTTPS_PORT} ]];then
+		URL_HTTPS_PORT=":${HTTPS_PORT}"
+	fi
     REDIRECT_BLOCK="
 server {
     listen ${HTTP_PORT};
@@ -81,7 +91,7 @@ server {
     server_name ${SERVERNAME:-${SERVER} ${SERVER}.${SUFFIX}};
     # Prevent nginx HTTP Server Detection
     server_tokens off;
-    return 301 https://\$server_name:${HTTPS_PORT}/\$request_uri;
+    return 301 https://\$server_name${URL_HTTPS_PORT}/\$request_uri;
 }
 "
 
@@ -136,7 +146,6 @@ server {
 
 	    processServerBlock
 	    HTTPS_BLOCK="${SERVER_BLOCK}"
-	    #HTTPS_BLOCK="${_HTTPS_BLOCK}"
 	fi
 }
 

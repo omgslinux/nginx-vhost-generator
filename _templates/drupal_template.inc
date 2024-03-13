@@ -1,4 +1,8 @@
 # Source: https://www.nginx.com/resources/wiki/start/topics/recipes/drupal/
+if [[ ! -f ../conf.d/upstream_php.conf ]];then
+    cp -p upstream_php.conf ../conf.d
+fi
+
 unset DRUPAL8 DRUPAL6
 if (( DRUPALVERSION > 6 ));then
 	DRUPAL8=1
@@ -7,6 +11,8 @@ else
 fi
 
 DRUPAL_BLOCK="
+	index index.php
+
     location = /favicon.ico {
         log_not_found off;
         access_log off;
