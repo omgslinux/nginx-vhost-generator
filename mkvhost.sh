@@ -5,7 +5,7 @@ if [[ -z $@ ]];then exit 1; fi
 function initVars()
 {
 	# Variables to be unset at the beginning of each vhost. You can set vhost defaults in defaults.inc
-	unset SERVER SUFFIX DOCROOT HTTP_PORT HTTP_ENV HTTPS_PORT HTTPS_ENV APP_ENV VHOST_TYPE
+	unset SERVER SERVERNAME SUFFIX DOCROOT HTTP_PORT HTTP_ENV HTTPS_PORT HTTPS_ENV APP_ENV VHOST_TYPE
 	unset SSL_BLOCK CUSTOM_BLOCK PROXY_PASS SSLCLIENT_FASTCGI SERVER_BLOCK
 	unset LOGDIRFORMAT SSL_CERTIFICATE SSL_CERTIFICATE_KEY SSL_CLIENT_CERTIFICATE SSL_VERIFY_CLIENT
 }
@@ -48,7 +48,7 @@ function processServerBlock()
     SERVER_BLOCK="
 server {
     ${LISTEN_BLOCK}
-    server_name ${SERVER}${SUFFIX:+ ${SERVER}.${SUFFIX}};
+    server_name ${SERVERNAME:-${SERVER}${SUFFIX:+ ${SERVER}.${SUFFIX}}};
     root ${DOCROOT};
     charset utf-8;
 
@@ -78,7 +78,7 @@ function processServers()
 server {
     listen ${HTTP_PORT};
     listen [::]:${HTTP_PORT};
-    server_name ${SERVER} ${SERVER}.${SUFFIX};
+    server_name ${SERVERNAME:-${SERVER} ${SERVER}.${SUFFIX}};
     # Prevent nginx HTTP Server Detection
     server_tokens off;
     return 301 https://\$server_name:${HTTPS_PORT}/\$request_uri;
