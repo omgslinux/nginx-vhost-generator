@@ -1,3 +1,7 @@
+# Let's make sure that the upstream_php definition is properly
+if [[ ! -f ../conf.d/upstream_php.conf ]];then
+    cp -p upstream_php.conf ../conf.d
+fi
 
 SYMFONY_BLOCK="
     ### BEGIN SYMFONY BLOCK
@@ -35,3 +39,5 @@ SYMFONY_BLOCK="
 "
 
 CUSTOM_BLOCK="${SYMFONY_BLOCK}"
+
+unset SYMFONY_BLOCK SSLCLIENT_FASTCGI

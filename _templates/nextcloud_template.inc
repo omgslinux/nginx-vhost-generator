@@ -1,4 +1,8 @@
 # Taken from https://docs.nextcloud.com/server/28/admin_manual/installation/nginx.html
+# Let's make sure that the upstream_php definition is properly
+if [[ ! -f ../conf.d/upstream_php.conf ]];then
+    cp -p upstream_php.conf ../conf.d
+fi
 
 GZIP_BLOCK="
     # Enable gzip but do not remove ETag headers

@@ -1,4 +1,7 @@
 # Source: https://www.nginx.com/resources/wiki/start/topics/recipes/mediawiki/
+if [[ ! -f ../conf.d/upstream_php.conf ]];then
+    cp -p upstream_php.conf ../conf.d
+fi
 
 MEDIAWIKI_BLOCK="
     index  index.php;
