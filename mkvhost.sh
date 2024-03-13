@@ -44,6 +44,19 @@ function main()
 
 function processServerBlock()
 {
+	STATICFILES_BLOCK=""
+	if [[ ${VHOST_TYPE} != "proxy" ]];then
+		STATICFILES_BLOCK="
+		location ~* \.(css|js|jpg)\$ {
+			access_log off;
+
+			add_header Cache-Control public;
+			add_header Pragma public;
+			add_header Vary Accept-Encoding;
+			expires 1M;
+		}
+	"
+	fi
 
     SERVER_BLOCK="
 server {
@@ -60,14 +73,6 @@ server {
     ${SSL_BLOCK}
 
     ${CUSTOM_BLOCK}
-	location ~* \.(css|js|jpg)\$ {
-		access_log off;
-
-		add_header Cache-Control public;
-		add_header Pragma public;
-		add_header Vary Accept-Encoding;
-		expires 1M;
-	}
 }
     "
 }
