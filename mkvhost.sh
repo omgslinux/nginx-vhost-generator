@@ -73,6 +73,7 @@ server {
     ${SSL_BLOCK}
 
     ${CUSTOM_BLOCK}
+	${STATICFILES_BLOCK}
 }
     "
 }
