@@ -57,17 +57,17 @@ server {
 
     ${APP_ENV}
 
-    location ~* \.(css|js|jpg)\$ {
-        access_log off;
-
-        add_header Cache-Control public;
-        add_header Pragma public;
-        add_header Vary Accept-Encoding;
-        expires 1M;
-    }
     ${SSL_BLOCK}
 
     ${CUSTOM_BLOCK}
+	location ~* \.(css|js|jpg)\$ {
+		access_log off;
+
+		add_header Cache-Control public;
+		add_header Pragma public;
+		add_header Vary Accept-Encoding;
+		expires 1M;
+	}
 }
     "
 }
