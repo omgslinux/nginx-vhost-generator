@@ -1,5 +1,10 @@
 # Source: https://www.nginx.com/resources/wiki/start/topics/recipes/piwik/
 
+# Let's make sure that the upstream_php definition is properly
+if [[ ! -f ../conf.d/upstream_php.conf ]];then
+    cp -p upstream_php.conf ../conf.d
+fi
+
 FASTCGI_PASS=${FASTCGI_PASS:-\$upstream_php}
 
 
