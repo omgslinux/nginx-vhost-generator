@@ -18,7 +18,7 @@ PROXY_BLOCK="
         include proxy_params;
         proxy_buffering off;
 
-		${SSLCLIENT_FASTCGI:+include snippets/sslclient-fastcgi.conf;}
+		${SSLCLIENT_FASTCGI:+include snippets/proxy_ssl_client-upstream.conf;}
     }
 
     ### END OF PROXY BLOCK
