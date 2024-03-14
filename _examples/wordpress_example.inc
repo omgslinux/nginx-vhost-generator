@@ -29,7 +29,7 @@ WORDPRESS_SINGLESITE="1"
 WORDPRESS_MULTISITE_SUBDIR=""
 WORDPRESS_MULTISITE_SUBDOMAIN=""
 
-# For single sites, set the subdir. Default is "" (which means "/")
-WORDPRESS_SUBDIR="/"
+# For single sites, set the subdir. Default is ""
+WORDPRESS_SUBDIR=""
 
 ## END OF WORDPRESS SPECIFIC SETTINGS

@@ -10,6 +10,11 @@ fi
 
 unset WORDPRESS_MULTISITE_SUBDIR_BLOCK WORDPPRESS_MULTISITE_SUBDOMAIN_BLOCK WORDPRESS_SINGLESITE_BLOCK
 
+LOCATION_PHP_COMMON_CONTENT_BLOCK="
+        try_files \$uri =404;
+        include fastcgi.conf;
+        fastcgi_pass \$upstream_php;
+"
 if [[ ${WORDPRESS_SINGLESITE} ]];then
     # Default SUBDIR to "/"
     if [[ -z ${WORDPRESS_SUBDIR} ]];then
@@ -41,12 +46,8 @@ if [[ ${WORDPRESS_SINGLESITE} ]];then
 
     location ~ \.php\$ {
         #NOTE: You should have \"cgi.fix_pathinfo = 0;\" in php.ini
-        include fastcgi_params;
+        ${LOCATION_PHP_COMMON_CONTENT_BLOCK}
         ${WORDPRESS_ROOT:+fastcgi_split_path_info ^(${WORDPRESS_SUBDIR})(/.*)$;}
-        fastcgi_intercept_errors on;
-        fastcgi_pass \$upstream_php;
-        #The following parameter can be also included in fastcgi_params file
-        #fastcgi_param  SCRIPT_FILENAME \$document_root\$fastcgi_script_name;
     }
 
     location ~* \.(js|css|png|jpg|jpeg|gif|ico)\$ {
@@ -58,37 +59,35 @@ if [[ ${WORDPRESS_SINGLESITE} ]];then
 elif [[ ${WORDPRESS_MULTISITE_SUBDIR} ]];then
 
     WORDPRESS_MULTISITE_SUBDIR_BLOCK="
-location ~ ^(/[^/]+)?/files/(.+) {
-    try_files /wp-content/blogs.dir/\$blogiddir/files/\$2 /wp-includes/ms-files.php?file=\$2 ;
-    access_log off;
-    log_not_found off;
-    expires max;
-}
+    location ~ ^(/[^/]+)?/files/(.+) {
+        try_files /wp-content/blogs.dir/\$blogiddir/files/\$2 /wp-includes/ms-files.php?file=\$2 ;
+        access_log off;
+        log_not_found off;
+        expires max;
+    }
 
-#avoid php readfile()
-location ^~ /blogs.dir {
-    internal;
-    alias /var/www/example.com/htdocs/wp-content/blogs.dir ;
-    access_log off;
-    log_not_found off;
-    expires max;
-}
+    #avoid php readfile()
+    location ^~ /blogs.dir {
+        internal;
+        alias ${DOCROOT}/wp-content/blogs.dir ;
+        access_log off;
+        log_not_found off;
+        expires max;
+    }
 
-if (!-e \$request_filename) {
-    rewrite /wp-admin\$ \$scheme://\$host\$uri/ permanent;
-    rewrite ^(/[^/]+)?(/wp-.*) \$2 last;
-    rewrite ^(/[^/]+)?(/.*\.php) \$2 last;
-}
+    if (!-e \$request_filename) {
+        rewrite /wp-admin\$ \$scheme://\$host\$uri/ permanent;
+        rewrite ^(/[^/]+)?(/wp-.*) \$2 last;
+        rewrite ^(/[^/]+)?(/.*\.php) \$2 last;
+    }
 
-location / {
-    try_files \$uri \$uri/ /index.php?\$args ;
-}
+    location / {
+        try_files \$uri \$uri/ /index.php?\$args ;
+    }
 
-location ~ \.php\$ {
-    try_files \$uri =404;
-    include fastcgi_params;
-    fastcgi_pass \$upstream_php;
-}
+    location ~ \.php\$ {
+        ${LOCATION_PHP_COMMON_CONTENT_BLOCK}
+    }
     "
     else
         WORDPPRESS_MULTISITE_SUBDOMAIN_BLOCK="
@@ -97,9 +96,7 @@ location ~ \.php\$ {
     }
 
     location ~ \.php\$ {
-        try_files \$uri =404;
-        include fastcgi_params;
-        fastcgi_pass \$upstream_php;
+        ${LOCATION_PHP_COMMON_CONTENT_BLOCK}
     }
 
     #WPMU Files
@@ -113,7 +110,7 @@ location ~ \.php\$ {
     #WPMU x-sendfile to avoid php readfile()
     location ^~ /blogs.dir {
         internal;
-        alias /var/www/example.com/htdocs/wp-content/blogs.dir;
+        alias ${DOCROOT}/htdocs/wp-content/blogs.dir;
         access_log off;
         log_not_found off;
         expires max;
