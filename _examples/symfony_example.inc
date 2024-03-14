@@ -14,8 +14,8 @@ HTTPS_PORT="443" # Port for https
 HTTPS_ENV="prod" # For symfony, set the value for $APP_ENV when using https
 
 # Usual setup for letsencrypt
-SERVER_CERT_PATH="/etc/letsencrypt/live/${SERVER}.${SUFFIX}/fullchain.pem"
-SERVER_KEY_PATH="/etc/letsencrypt/live/${SERVER}.${SUFFIX}/privkey.pem"
+SSL_CERTIFICATE="/etc/letsencrypt/live/${SERVER}.${SUFFIX}/fullchain.pem"
+SSL_CERTIFICATE_KEY="/etc/letsencrypt/live/${SERVER}.${SUFFIX}/privkey.pem"
 
 # The specific lines for CA certificate and client verification level in config file.
 SSL_CLIENT_CERTIFICATE="/etc/ssl/private/CA.pem"

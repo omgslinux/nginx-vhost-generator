@@ -13,8 +13,8 @@ HTTPS_PORT="443" # Port for https
 
 # If not using https, comment the following lines
 # Usual setup for letsencrypt
-SERVER_CERT_PATH="/etc/letsencrypt/live/${SERVER}.${SUFFIX}/fullchain.pem"
-SERVER_KEY_PATH="/etc/letsencrypt/live/${SERVER}.${SUFFIX}/privkey.pem"
+SSL_CERTIFICATE="/etc/letsencrypt/live/${SERVER}.${SUFFIX}/fullchain.pem"
+SSL_CERTIFICATE_KEY="/etc/letsencrypt/live/${SERVER}.${SUFFIX}/privkey.pem"
 
 # The specific lines for CA certificate and client verification level in config file.
 SSL_CLIENT_CERTIFICATE="/etc/ssl/private/CA.pem"
