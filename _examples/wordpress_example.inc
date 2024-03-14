@@ -13,8 +13,8 @@ HTTPS_PORT="443" # Port for https
 
 # If not using https, comment the following lines
 # Usual setup for letsencrypt
-SERVER_CERT_PATH="/etc/letsencrypt/live/${SERVER}.${SUFFIX}/fullchain.pem"
-SERVER_KEY_PATH="/etc/letsencrypt/live/${SERVER}.${SUFFIX}/privkey.pem"
+SSL_CERTIFICATE="/etc/letsencrypt/live/${SERVER}.${SUFFIX}/fullchain.pem"
+SSL_CERTIFICATE_KEY="/etc/letsencrypt/live/${SERVER}.${SUFFIX}/privkey.pem"
 
 # The specific lines for CA certificate and client verification level in config file.
 SSL_CLIENT_CERTIFICATE="/etc/ssl/private/CA.pem"
@@ -29,7 +29,7 @@ WORDPRESS_SINGLESITE="1"
 WORDPRESS_MULTISITE_SUBDIR=""
 WORDPRESS_MULTISITE_SUBDOMAIN=""
 
-# For single sites, set the subdir. Default is "" (which means "/")
-WORDPRESS_SUBDIR="/"
+# For single sites, set the subdir. Default is ""
+WORDPRESS_SUBDIR=""
 
 ## END OF WORDPRESS SPECIFIC SETTINGS
