@@ -4,7 +4,7 @@ VHOST_TYPE="symfony"
 # Then, customize the vhost
 SERVER="symfony" # Vhost used name
 # Suffix to add to ${SERVER} to have a FQDN. Uncomment if different from defaults.inc
-#SUFFIX="example.org"
+SUFFIX="example.org"
 
 DOCROOT="/var/www/vhosts/${SERVER}" # The vhost document root
 HTTP_PORT="80" # Port for http request
