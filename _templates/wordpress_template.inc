@@ -91,6 +91,7 @@ elif [[ ${WORDPRESS_MULTISITE_SUBDIR} ]];then
     }
     "
     else
+        SERVERNAME="${SERVER}.${SUFFIX} *.${SERVER}.${SUFFIX}"
         WORDPPRESS_MULTISITE_SUBDOMAIN_BLOCK="
     location / {
         try_files \$uri \$uri/ /index.php?\$args ;
@@ -117,7 +118,6 @@ elif [[ ${WORDPRESS_MULTISITE_SUBDIR} ]];then
         expires max;
     }
 "
-    SERVERNAME="${SERVER}.${SUFFIX} *.${SERVER}.${SUFFIX}"
 fi
 
 WORDPRESS_BLOCK="
