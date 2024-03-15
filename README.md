@@ -46,6 +46,8 @@ SSLCLIENT_FASTCGI=""
 ```
 
 * DO NOT FORGET to set the correct <code>VHOST_TYPE</code> in your file
+* Not included in the examples, you can define a <code>EXTRA_BLOCK</code> for adding extra settings. That block will be
+added at the bottom of the generated config file.
 * You can set the format for the log directory to something different to <code>${SERVER}.${SUFFIX}, like ${SUFFIX}/${SERVER}</code>.
 You can do this by modifying the <code>LOGDIRFORMAT</code> variable in the <code>getLogDirFormat()</code> function in <code>defaults.inc</code>,
 or define <code>LOGDIRFORMAT</code> in single vhosts. The directory for logs will be <code>/var/log/nginx/$LOGDIRFORMAT</code>.
