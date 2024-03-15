@@ -3,7 +3,7 @@
 # Lets make sure that there's a redmine upstream definition to be used below
 # You can modify the copied file for your needs
 if [[ ! -f ../conf.d/redmine.conf ]]; then
-    cp -p redmine.conf ../conf.d/
+    cp -p ${CONFS_DIR}/redmine.conf ../conf.d
 fi
 
 PROXY_PASS=${PROXY_PASS:-http://redmine}

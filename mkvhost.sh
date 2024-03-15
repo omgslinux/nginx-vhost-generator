@@ -8,6 +8,10 @@ function initVars()
 	unset SERVER SERVERNAME SUFFIX DOCROOT HTTP_PORT HTTP_ENV HTTPS_PORT HTTPS_ENV APP_ENV VHOST_TYPE
 	unset SSL_BLOCK CUSTOM_BLOCK PROXY_PASS SSLCLIENT_FASTCGI SERVER_BLOCK
 	unset LOGDIRFORMAT SSL_CERTIFICATE SSL_CERTIFICATE_KEY SSL_CLIENT_CERTIFICATE SSL_VERIFY_CLIENT
+	BASE_DIR='.'
+	TEMPLATES_DIR="${BASE_DIR}/_templates"
+	CONFS_DIR="${BASE_DIR}/_conf"
+	SNIPPETS_DIR="${BASE_DIR}/_snippets"
 }
 
 function main()
@@ -20,7 +24,7 @@ function main()
 				. ${VHOSTFILE}
 			done
 			if [[ ${VHOST_TYPE} ]];then
-				TEMPLATE_FILE="_templates/${VHOST_TYPE}_template.inc"
+				TEMPLATE_FILE="${TEMPLATES_DIR}/${VHOST_TYPE}_template.inc"
 				if [[ -f ${TEMPLATE_FILE} ]];then
 					. ${TEMPLATE_FILE}
 					getLogDirFormat
@@ -31,7 +35,7 @@ function main()
 					# Copy the necessary snippets
 					if [[ ${SSLCLIENT_FASTCGI} ]];then
 						if [[ ! -f ../snippets/sslclient-fastcgi.conf ]];then
-							cp -p ./_snippets/sslclient-fastcgi.conf ../snippets/
+							cp -p ${SNIPPETS_DIR}/sslclient-fastcgi.conf ../snippets/
 						fi
 					fi
 
@@ -39,7 +43,7 @@ function main()
 					ln -s ../sites-available/${SERVER} ../sites-enabled/
 					echo "Vhost ${VHOST} created, along with ${LOGDIR} and site-enabled symlink"
 				else
-					echo "Invalid VHOST_TYPE for ${VHOST}. Choose one of _templates/<VHOST_TYPE>_template.inc"
+					echo "Invalid VHOST_TYPE for ${VHOST}. Choose one of ${TEMPLATES_DIR}/<VHOST_TYPE>_template.inc"
 				fi
 			else
 				echo "No VHOST_TYPE variable set in ${VHOST}"

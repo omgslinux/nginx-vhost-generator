@@ -2,11 +2,11 @@
 
 # Copy the necessary files conf files
 if [[ ! -f ../conf.d/wordpress.conf ]];then
-    cp -p ./_conf/wordpress.conf ../conf.d
+    cp -p ${CONFS_DIR}/wordpress.conf ../conf.d
 fi
 
 if [[ ! -f ../conf.d/upstream_php.conf ]];then
-    cp -p ./_conf/upstream_php.conf ../conf.d
+    cp -p ${CONFS_DIR}/upstream_php.conf ../conf.d
 fi
 
 unset WORDPRESS_MULTISITE_SUBDIR_BLOCK WORDPPRESS_MULTISITE_SUBDOMAIN_BLOCK WORDPRESS_SINGLESITE_BLOCK
