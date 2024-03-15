@@ -24,3 +24,6 @@ SSL_VERIFY_CLIENT="optional"
 # Set to any value for using fastcgi and client certificates.
 # This will allow your app to check the client certificate validation process
 SSLCLIENT_FASTCGI=""
+
+# Index setting. If empty, defaults to index.php. For old symfony versions, set to app.php
+INDEX_BLOCK=""

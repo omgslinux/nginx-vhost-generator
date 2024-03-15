@@ -8,7 +8,7 @@ fi
 
 PHP_BLOCK="
     ### BEGIN PHP BLOCK
-    index index.php;
+    index ${INDEX_BLOCK:-index.php};
 
     location / {
         # try to serve file directly, fallback to index.php
@@ -19,6 +19,7 @@ PHP_BLOCK="
         fastcgi_pass \$upstream_php;
         include snippets/fastcgi-php.conf;
 		${SSLCLIENT_FASTCGI:+include snippets/sslclient-fastcgi.conf;}
+        ${EXTRA_INDEX_LOCATION_BLOCK}
     }
 
     # pass PHP scripts to FastCGI server
