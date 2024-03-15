@@ -22,3 +22,8 @@ SSL_VERIFY_CLIENT="optional"
 # Set to any value for using fastcgi and client certificates.
 # This will allow your app to check the client certificate validation process
 SSLCLIENT_FASTCGI=""
+
+# The contents for the index setting. If empty, defaults to index.php.
+INDEX_BLOCK=""
+# Set any content to be added to the index location block
+EXTRA_INDEX_BLOCK=""
