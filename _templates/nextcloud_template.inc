@@ -1,7 +1,8 @@
 # Taken from https://docs.nextcloud.com/server/28/admin_manual/installation/nginx.html
-# Let's make sure that the upstream_php definition is properly
+
+# Copy the necessary files conf files
 if [[ ! -f ../conf.d/upstream_php.conf ]];then
-    cp -p upstream_php.conf ../conf.d
+    cp -p ./_conf/upstream_php.conf ../conf.d
 fi
 
 GZIP_BLOCK="

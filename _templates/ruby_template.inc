@@ -1,8 +1,6 @@
 # Source: https://www.nginx.com/resources/wiki/start/topics/examples/simplerubyfcgi/
 
-# Make sure JAVA_URL is set with a suitable default
 PROXY_PASS=${PROXY_PASS:-http://unix:/var/run/my_app.sock:}
-
 
 RUBY_BLOCK="
     index index.html index.htm;

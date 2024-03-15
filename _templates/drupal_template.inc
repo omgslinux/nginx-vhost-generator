@@ -1,6 +1,8 @@
 # Source: https://www.nginx.com/resources/wiki/start/topics/recipes/drupal/
+
+# Copy the necessary files conf files
 if [[ ! -f ../conf.d/upstream_php.conf ]];then
-    cp -p upstream_php.conf ../conf.d
+    cp -p ./_conf/upstream_php.conf ../conf.d
 fi
 
 unset DRUPAL8 DRUPAL6

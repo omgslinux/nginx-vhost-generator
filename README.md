@@ -14,10 +14,6 @@ Installation
 
 * Clone the repository anywhere and copy the skeleton at the same level that /etc/nginx,
 so there's a new directory in that tree.
-* Copy the sslclient-fastcgi.conf file into the snippets dir. Optionally, take a look at the supplied *.conf files
-and copy them to conf.d for the symfony scripts to work out-of-the box. You can then suit them to your needs.
-* For php and fastcgi, try to update your nginx installation after copying, so $upstream_php points to
-the default php fastcgi to be used in fastcgi_pass by default in the php sites.
 * Duplicate the defaults.inc_dist file and name it defaults.inc. Set any defaults for your needs, theorically
 common variables for most (or all) sites
 * Check the _examples directory. You can use any of the files as template for your vhosts
@@ -52,6 +48,14 @@ SSLCLIENT_FASTCGI=""
 You can do this by modifying the LOGDIRFORMAT variable in getLogDirFormat function in defaults.inc,
 or define LOGDIRFORMAT in single vhosts. The directory for logs will be /var/log/nginx/$LOGDIRFORMAT.
 * If SSL_CERTIFICATE is empty or not set, there will be no https block
+* Some templates need extra config files in the _conf/ directory that will be copied to /etc/nginx/conf
+directory when necessary. Make sure that, AFTER using a template,
+the copied files suit your needs and don't break anything. It's suggested that in case of conflict, use the copied
+definitions for other sites in order to avoid generated files not to work. If the necessary file already exists
+in the targe directory, no copy will take place.
+* Similarly, files in _snippets/ directory will be copied when necessary to /etc/nginx/snippets directory.
+* For php and fastcgi, try to update your nginx installation after copying, so $upstream_php points to
+the default php fastcgi to be used in fastcgi_pass by default in the php sites.
 * When you are finished, you can generate the config file by running ./mkvhost.sh <dir>, which will:
     * Include any .inc file inside <dir>
     * Create/Overwrite the config file in ../sites-available, for both HTTP and HTTPS in the same file

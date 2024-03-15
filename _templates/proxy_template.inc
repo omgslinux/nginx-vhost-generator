@@ -1,3 +1,8 @@
+# Copy the necessary files conf files
+if [[ ! -f ../snippets/proxy_ssl_client-upstream.conf ]];then
+    cp -p ./_snippets/proxy_ssl_client-upstream.conf ../snippets/
+fi
+
 PROXY_BLOCK="
     ### BEGIN PROXY BLOCK
 

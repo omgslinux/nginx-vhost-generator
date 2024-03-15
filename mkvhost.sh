@@ -28,6 +28,13 @@ function main()
 					processServers
 					writeBlocks
 
+					# Copy the necessary snippets
+					if [[ ${SSLCLIENT_FASTCGI} ]];then
+						if [[ ! -f ../snippets/sslclient-fastcgi.conf ]];then
+							cp -p ./_snippets/sslclient-fastcgi.conf ../snippets/
+						fi
+					fi
+
 					rm ../sites-enabled/${SERVER} 2>/dev/null
 					ln -s ../sites-available/${SERVER} ../sites-enabled/
 					echo "Vhost ${VHOST} created, along with ${LOGDIR} and site-enabled symlink"

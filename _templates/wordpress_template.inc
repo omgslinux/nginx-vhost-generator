@@ -1,11 +1,12 @@
 # Taken from https://www.nginx.com/resources/wiki/start/topics/recipes/wordpress/
-# For multisite to work, copy the wordpress.conf file to /etc/conf.d
+
+# Copy the necessary files conf files
 if [[ ! -f ../conf.d/wordpress.conf ]];then
-    cp -p wordpress.conf ../conf.d
+    cp -p ./_conf/wordpress.conf ../conf.d
 fi
 
 if [[ ! -f ../conf.d/upstream_php.conf ]];then
-    cp -p upstream_php.conf ../conf.d
+    cp -p ./_conf/upstream_php.conf ../conf.d
 fi
 
 unset WORDPRESS_MULTISITE_SUBDIR_BLOCK WORDPPRESS_MULTISITE_SUBDOMAIN_BLOCK WORDPRESS_SINGLESITE_BLOCK

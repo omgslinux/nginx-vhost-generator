@@ -1,6 +1,8 @@
 # Source: https://github.com/matomo-org/matomo-nginx/blob/master/sites-available/matomo.conf
+
+# Copy the necessary files conf files
 if [[ ! -f ../conf.d/upstream_php.conf ]];then
-    cp -p upstream_php.conf ../conf.d
+    cp -p ./_conf/upstream_php.conf ../conf.d
 fi
 
 FASTCGI_PASS=${FASTCGI_PASS:-\$upstream_php}
