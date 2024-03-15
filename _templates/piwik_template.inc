@@ -1,9 +1,10 @@
 # Source: https://www.nginx.com/resources/wiki/start/topics/recipes/piwik/
 
-# Copy the necessary files conf files
-if [[ ! -f ../conf.d/upstream_php.conf ]];then
-    cp -p ${CONFS_DIR}/upstream_php.conf ../conf.d
-fi
+# Inherit the generic php template for single point to check files
+
+EXTRA_INDEX_LOCATION_BLOCK=""
+
+. ${TEMPLATES_DIR}/php_template.inc
 
 FASTCGI_PASS=${FASTCGI_PASS:-\$upstream_php}
 

@@ -1,13 +1,16 @@
 # Taken from https://www.nginx.com/resources/wiki/start/topics/recipes/wordpress/
 
-# Copy the necessary files conf files
+# Inherit the generic php template for single point to check files
+
+EXTRA_INDEX_LOCATION_BLOCK=""
+
+. ${TEMPLATES_DIR}/php_template.inc
+
+# Copy the necessary files conf for wordpress blogs
 if [[ ! -f ../conf.d/wordpress.conf ]];then
     cp -p ${CONFS_DIR}/wordpress.conf ../conf.d
 fi
 
-if [[ ! -f ../conf.d/upstream_php.conf ]];then
-    cp -p ${CONFS_DIR}/upstream_php.conf ../conf.d
-fi
 
 unset WORDPRESS_MULTISITE_SUBDIR_BLOCK WORDPPRESS_MULTISITE_SUBDOMAIN_BLOCK WORDPRESS_SINGLESITE_BLOCK
 

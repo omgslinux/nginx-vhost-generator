@@ -1,4 +1,4 @@
-# Inherit the generic php template
+# Inherit the generic php template for single point to check files
 
 EXTRA_INDEX_LOCATION_BLOCK="    fastcgi_param APP_ENV \$app_env;"
 

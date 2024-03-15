@@ -1,9 +1,10 @@
 # Source: https://github.com/matomo-org/matomo-nginx/blob/master/sites-available/matomo.conf
 
-# Copy the necessary files conf files
-if [[ ! -f ../conf.d/upstream_php.conf ]];then
-    cp -p ${CONFS_DIR}/upstream_php.conf ../conf.d
-fi
+# Inherit the generic php template
+
+EXTRA_INDEX_LOCATION_BLOCK=""
+
+. ${TEMPLATES_DIR}/php_template.inc
 
 FASTCGI_PASS=${FASTCGI_PASS:-\$upstream_php}
 
