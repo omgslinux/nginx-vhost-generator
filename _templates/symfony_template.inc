@@ -2,7 +2,7 @@
 
 # Copy the necessary files conf files
 if [[ ! -f ../conf.d/upstream_php.conf ]];then
-    cp -p ./_conf/upstream_php.conf ../conf.d
+    cp -p ${CONFS_DIR}/upstream_php.conf ../conf.d
 fi
 
 SYMFONY_BLOCK="
