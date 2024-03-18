@@ -69,7 +69,7 @@ WEBFINGER_BLOCK="
 WOFF_BLOCK="
     location ~ \.woff2?\$ {
         try_files \$uri /index.php\$request_uri;
-        expires 7d;         # Cache-Control policy borrowed from `.htaccess`
+        expires 7d;         # Cache-Control policy borrowed from '.htaccess'
         access_log off;     # Optional: Don't log access to assets
     }
 "
