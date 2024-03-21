@@ -14,11 +14,12 @@ fi
 
 unset WORDPRESS_MULTISITE_SUBDIR_BLOCK WORDPPRESS_MULTISITE_SUBDOMAIN_BLOCK WORDPRESS_SINGLESITE_BLOCK
 
-LOCATION_PHP_COMMON_CONTENT_BLOCK="
+read -r -d '' LOCATION_PHP_COMMON_CONTENT_BLOCK << EOB
         try_files \$uri =404;
         include fastcgi.conf;
         fastcgi_pass \$upstream_php;
-"
+EOB
+
 if [[ ${WORDPRESS_SINGLESITE} ]];then
     # Default SUBDIR to "/"
     if [[ -z ${WORDPRESS_SUBDIR} ]];then
@@ -30,7 +31,8 @@ if [[ ${WORDPRESS_SINGLESITE} ]];then
     if [[ ${WORDPRESS_SUBDIR} = '/' ]];then
         WORDPRESS_ROOT="1"
     fi
-    WORDPRESS_SINGLESITE_BLOCK="
+
+    read -r -d '' WORDPRESS_SINGLESITE_BLOCK <<EOB
     location = /favicon.ico {
         log_not_found off;
         access_log off;
@@ -44,21 +46,21 @@ if [[ ${WORDPRESS_SINGLESITE} ]];then
 
     location ${WORDPRESS_SUBDIR} {
         # This is cool because no php is touched for static content.
-        # include the \"?\$args\" part so non-default permalinks doesn't break when using query string
+        # include the "?\$args" part so non-default permalinks doesn't break when using query string
         try_files \$uri \$uri/ ${WORDPRESS_SUBDIR}/index.php?\$args;
     }
 
     location ~ \.php\$ {
-        #NOTE: You should have \"cgi.fix_pathinfo = 0;\" in php.ini
+        #NOTE: You should have "cgi.fix_pathinfo = 0;" in php.ini
         ${LOCATION_PHP_COMMON_CONTENT_BLOCK}
-        ${WORDPRESS_ROOT:+fastcgi_split_path_info ^(${WORDPRESS_SUBDIR})(/.*)$;}
+        ${WORDPRESS_ROOT:+fastcgi_split_path_info ^(${WORDPRESS_SUBDIR})(/.*)\$;}
     }
 
     location ~* \.(js|css|png|jpg|jpeg|gif|ico)\$ {
         expires max;
         log_not_found off;
     }
-    "
+EOB
 
 elif [[ ${WORDPRESS_MULTISITE_SUBDIR} ]];then
 

@@ -2,8 +2,8 @@
 # Copy the necessary files conf files
 
 # Copy the necessary files conf files
-if [[ ! -f ../conf.d/upstream_php.conf ]];then
-    cp -p ${CONFS_DIR}/upstream_php.conf ../conf.d
+if [[ ! -f ../conf.d/php.conf ]];then
+    cp -p ${CONFS_DIR}/php.conf ../conf.d
 fi
 
 PHP_BLOCK="

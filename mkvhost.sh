@@ -27,6 +27,14 @@ function main()
 				TEMPLATE_FILE="${TEMPLATES_DIR}/${VHOST_TYPE}_template.inc"
 				if [[ -f ${TEMPLATE_FILE} ]];then
 					. ${TEMPLATE_FILE}
+
+					# Copy the necessary conf file for the VHOST_TYPE
+					if [[ -f ${CONFS_DIR}/${VHOST_TYPE}.conf ]];then
+						if [[ ! -f ../conf.d/${VHOST_TYPE}.conf ]];then
+						    cp -p ${CONFS_DIR}/${VHOST_TYPE}.conf ../conf.d
+						fi
+					fi
+
 					getLogDirFormat
 					LOGDIR="/var/log/nginx/${LOGDIRFORMAT:-${SERVER}.${SUFFIX}}"
 					processServers
@@ -134,11 +142,11 @@ server {
     fi
     unset APP_ENV
 
-	SSL_BLOCK="
+	read -r -d '' SSL_BLOCK <<EOB
 	# BEGIN SSL_BLOCK
-	add_header Strict-Transport-Security \"max-age=31536000;\";
-	add_header Pragma \"no-cache\";
-	add_header Cache-Control \"private, max-age=0, no-cache, no-store\";
+	add_header Strict-Transport-Security "max-age=31536000;";
+	add_header Pragma "no-cache";
+	add_header Cache-Control "private, max-age=0, no-cache, no-store";
 
 	# BEGIN CERT BLOCK
 	${SSL_CERTIFICATE:+ssl_certificate ${SSL_CERTIFICATE};}
@@ -152,7 +160,7 @@ server {
 	ssl_session_cache    shared:SSL:10m;
 	ssl_session_timeout  10m;
 	# END SSL_BLOCK
-"
+EOB
 
 	if [[ ${SSL_CERTIFICATE} ]];then
 	    if [[ ${HTTPS_ENV} ]];then
