@@ -134,7 +134,7 @@ read -r -d '' NEXTCLOUD_BLOCK << EOB
         #Avoid sending the security headers twice
         fastcgi_param modHeadersAvailable true;
         fastcgi_param front_controller_active true;
-        fastcgi_pass \$upstream_php;
+        fastcgi_pass \$php_nextcloud;
         fastcgi_intercept_errors on;
         fastcgi_request_buffering off;
         fastcgi_read_timeout 300;
@@ -143,11 +143,6 @@ read -r -d '' NEXTCLOUD_BLOCK << EOB
     location ~ ^/(?:updater|ocs-provider)(?:\$|/) {
         try_files \$uri/ =404;
         index index.php;
-    }
-
-    # Rule borrowed from .htaccess
-    location /remote {
-        return 301 /remote.php\$request_uri;
     }
 
     ${COMMON_BLOCK}
