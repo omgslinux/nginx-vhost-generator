@@ -54,8 +54,8 @@ location ^~ /.well-known {
     # The rules in this block are an adaptation of the rules
     # in the Nextcloud '.htaccess' that concern '/.well-known'.
 
-    location = /.well-known/carddav { return 301 ${NEXTCLOUD_DIR}/remote.php/dav/; }
-    location = /.well-known/caldav  { return 301 ${NEXTCLOUD_DIR}/remote.php/dav/; }
+    location = /.well-known/carddav { return 301 ${NEXTCLOUD_DIR}/remote.php/dav; }
+    location = /.well-known/caldav  { return 301 ${NEXTCLOUD_DIR}/remote.php/dav; }
 
     location /.well-known/acme-challenge    { try_files \$uri \$uri/ =404; }
     location /.well-known/pki-validation    { try_files \$uri \$uri/ =404; }
