@@ -19,7 +19,7 @@ Installation
 ============
 * Clone the repository anywhere (or from <code>/etc/nginx</code>). In any case, you will have to copy or move so the repository directory is <code>/etc/nginx/&lt;repo&gt;</code>.
 * Duplicate the <code>defaults.inc_dist</code> file and name it <code>defaults.inc</code>, which will have your common default variables for any vhost.
-* Set any defaults for your needs, theorically common variables for most (or all) sites
+* Set any defaults for your needs, theorically common variables for most (or all) sites. When creating a vhost definition, you can redefine there any variable existing in this file, even if it is not in the example of the definition.
 
 Templates
 =========

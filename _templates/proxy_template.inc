@@ -10,8 +10,6 @@ PROXY_BLOCK="
     add_header Pragma \"no-cache\";
     add_header Cache-Control \"private, max-age=0, no-cache, no-store\";
 
-    fastcgi_buffers 64 4K;
-
     proxy_connect_timeout       600;
     proxy_send_timeout          600;
     proxy_read_timeout          600;

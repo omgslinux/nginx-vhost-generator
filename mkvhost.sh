@@ -87,6 +87,10 @@ server {
     error_log ${LOGDIR}/${SERVER}${SSL_BLOCK:+-ssl}_error.log;
     access_log ${LOGDIR}/${SERVER}${SSL_BLOCK:+-ssl}_access.log;
 
+	${CLIENT_MAX_BODY_SIZE:+client_max_body_size ${CLIENT_MAX_BODY_SIZE};}
+	${CLIENT_BODY_TIMEOUT:+client_body_timeout ${CLIENT_BODY_TIMEOUT};}
+	${FASTCGI_BUFFERS:+fastcgi_buffers ${FASTCGI_BUFFERS};}
+
     ${APP_ENV}
 
     ${SSL_BLOCK}

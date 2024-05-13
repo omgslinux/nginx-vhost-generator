@@ -109,10 +109,6 @@ read -r -d '' NEXTCLOUD_BLOCK << EOB
     ${WEBFINGER_BLOCK}
     ${WELL_KNOWN_BLOCK}
 
-    # set max upload size
-    client_max_body_size 512M;
-    fastcgi_buffers 64 4K;
-
 
     location / {
         rewrite ^ /index.php\$uri;
@@ -155,10 +151,6 @@ read -r -d '' LOCAL_BLOCK <<EOB
     ${ROBOTS_BLOCK}
 
     location ^~ ${NEXTCLOUD_DIR} {
-        # set max upload size and increase upload timeout:
-        client_max_body_size 512M;
-        client_body_timeout 300s;
-        fastcgi_buffers 64 4K;
 
         ${GZIP_BLOCK}
         # Pagespeed is not supported by Nextcloud, so if your server is built

@@ -22,3 +22,8 @@ SSLCLIENT_FASTCGI=""
 
 # Parameter for proxy_pass in / location. ONLY IN FRONTEND
 PROXY_PASS="192.168.55.105:8080"
+
+# Settings for several general options, to be overriden when necessary
+CLIENT_MAX_BODY_SIZE="512M" #   client_max_body_size 512M;
+CLIENT_BODY_TIMEOUT="300s"  #   client_body_timeout 300s;
+FASTCGI_BUFFERS="64 4K"     #   fastcgi_buffers 64 4K;

@@ -19,3 +19,7 @@ SSL_VERIFY_CLIENT="optional"
 # Set to any value for using fastcgi and client certificates.
 # This will allow your app to check the client certificate validation process
 SSLCLIENT_FASTCGI=""
+
+# Recommended defaults for mediawiki
+CLIENT_MAX_BODY_SIZE="5m"
+CLIENT_BODY_TIMEOUT="60";
