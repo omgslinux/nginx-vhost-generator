@@ -27,3 +27,6 @@ PROXY_PASS="192.168.55.105:8080"
 CLIENT_MAX_BODY_SIZE="512M" #   client_max_body_size 512M;
 CLIENT_BODY_TIMEOUT="300s"  #   client_body_timeout 300s;
 FASTCGI_BUFFERS="64 4K"     #   fastcgi_buffers 64 4K;
+
+# Set to any value if using websockets. Nextcloud recommends setting this
+USE_WEBSOCKET=""

@@ -3,6 +3,14 @@ if [[ ! -f ../snippets/proxy_ssl_client-upstream.conf ]];then
     cp -p ${SNIPPETS_DIR}/proxy_ssl_client-upstream.conf ../snippets/
 fi
 
+if [[ ${USE_WEBSOCKET} ]];then
+    WEBSOCKET_BLOCK="
+        # Websocket
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection $connection_upgrade;
+    "
+fi
 PROXY_BLOCK="
     ### BEGIN PROXY BLOCK
 
@@ -22,10 +30,11 @@ PROXY_BLOCK="
         proxy_buffering off;
 
 		${SSLCLIENT_FASTCGI:+include snippets/proxy_ssl_client-upstream.conf;}
+        ${USE_WEBSOCKET:+WEBSOCKET_BLOCK}
     }
 
     ### END OF PROXY BLOCK
 "
 CUSTOM_BLOCK="${PROXY_BLOCK}"
 
-unset PROXY_BLOCK
+unset PROXY_BLOCK USE_WEBSOCKET WEBSOCKET_BLOCK
