@@ -4,13 +4,13 @@ if [[ ! -f ../snippets/proxy_ssl_client-upstream.conf ]];then
 fi
 
 if [[ ${USE_WEBSOCKET} ]];then
-    WEBSOCKET_BLOCK="
+    read -r -d '' WEBSOCKET_BLOCK << EOB
         # Websocket
         proxy_http_version 1.1;
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection $connection_upgrade;
-    "
-fi
+EOB
+    fi
 PROXY_BLOCK="
     ### BEGIN PROXY BLOCK
 
