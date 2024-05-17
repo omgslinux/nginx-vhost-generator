@@ -7,8 +7,8 @@ if [[ ${USE_WEBSOCKET} ]];then
     read -r -d '' WEBSOCKET_BLOCK << EOB
         # Websocket
         proxy_http_version 1.1;
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection $connection_upgrade;
+        proxy_set_header Upgrade \$http_upgrade;
+        proxy_set_header Connection \$connection_upgrade;
 EOB
     fi
 PROXY_BLOCK="
@@ -30,7 +30,7 @@ PROXY_BLOCK="
         proxy_buffering off;
 
 		${SSLCLIENT_FASTCGI:+include snippets/proxy_ssl_client-upstream.conf;}
-        ${USE_WEBSOCKET:+WEBSOCKET_BLOCK}
+        ${USE_WEBSOCKET:+${WEBSOCKET_BLOCK}}
     }
 
     ### END OF PROXY BLOCK
