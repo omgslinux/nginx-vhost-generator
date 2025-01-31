@@ -136,8 +136,10 @@ server {
         APP_ENV="set \$app_env ${HTTP_ENV};"
     fi
 
-    LISTEN_BLOCK="${LISTEN_HTTP_BLOCK}"
-    processServerBlock
+	if [[ ${HTTP_PORT} ]];then
+    	LISTEN_BLOCK="${LISTEN_HTTP_BLOCK}"
+    	processServerBlock
+	fi
 
     if [[ $HTTP_REDIRECT ]];then
         HTTP_BLOCK="${REDIRECT_BLOCK}"
