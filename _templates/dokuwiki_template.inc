@@ -6,6 +6,25 @@ EXTRA_INDEX_LOCATION_BLOCK=""
 
 . ${TEMPLATES_DIR}/php_template.inc
 
+if [[ ${DOKUWIKI_USEREWRITE} == "0" ]];then
+    ROOT_LOCATION_BLOCK="try_files \$uri \$uri/ =404;"
+else
+    ROOT_LOCATION_BLOCK="try_files \$uri \$uri/ @dokuwiki;"
+    DOKUWIKI_URL_REWRITE="rewrite ^/doku.php/(.*) /doku.php?id=\$1&\$args last;"
+    if [[ ${DOKUWIKI_USEREWRITE} == "1" ]];then
+        DOKUWIKI_URL_REWRITE="rewrite ^/(.*) /doku.php?id=\$1&\$args last;"
+    fi
+    DOKUWIKI_URL_REWRITE_BLOCK="
+    location @dokuwiki {
+    rewrite ^/_media/(.*) /lib/exe/fetch.php?media=\$1 last;
+    rewrite ^/_detail/(.*) /lib/exe/detail.php?media=\$1 last;
+    rewrite ^/_export/([^/]+)/(.*) /doku.php?do=export_\$1&id=\$2 last;
+    ${DOKUWIKI_URL_REWRITE}
+    }
+    "
+fi
+unset DOKUWIKI_URL_REWRITE
+
 if [[ ${DOKUWIKI_INSTALLED} ]];then
     DOKUWIKI_INSTALL_BLOCK="
     # Comment out while installing, then uncomment
@@ -59,30 +78,20 @@ DOKUWIKI_BLOCK="
 # REDIRECT & PHP ### ######### ######### ######### ######### ######### #########
 
     location / {
-        try_files \$uri \$uri/ @dokuwiki;
+        ${ROOT_LOCATION_BLOCK}
 
         # This means; where \$uri is 'path', if 'GET /path' doesnt exist, redirect
         # client to 'GET /path/' directory. If neither, goto @dokuwiki rules.
     }
 
-    location @dokuwiki {
-        rewrite ^/_media/(.*) /lib/exe/fetch.php?media=\$1 last;
-        rewrite ^/_detail/(.*) /lib/exe/detail.php?media=\$1 last;
-        rewrite ^/_export/([^/]+)/(.*) /doku.php?do=export_\$1&id=\$2 last;
-#        rewrite ^/tag/(.*) /doku.php?id=tag:$1&do=showtag&tag=tag:\$1 last;  #untested
-        rewrite ^/(.*) /doku.php?id=\$1&$args last;
-
-        # rewrites "doku.php/" out of the URLs if you set the userewrite
-        # setting to .htaccess in dokuwiki config page
-    }
+    ${DOKUWIKI_URL_REWRITE_BLOCK}
 
     location ~ \.php$ {
-        try_files \$uri \$uri/ /doku.php;
+        #try_files \$uri \$uri/ /doku.php;
 
         include       fastcgi_params;
         fastcgi_param SCRIPT_FILENAME \$document_root\$fastcgi_script_name;
         fastcgi_param REDIRECT_STATUS 200;
-        # fastcgi_param HTTPS on;     # optional ?! TODO
 
         fastcgi_pass \$upstream_php;
     }
@@ -91,4 +100,4 @@ DOKUWIKI_BLOCK="
 
 CUSTOM_BLOCK="${DOKUWIKI_BLOCK}"
 
-unset DOKUWIKI_BLOCK DOKUWIKI_INSTALL_BLOCK DOKUWIKI_INSTALLED
+unset DOKUWIKI_BLOCK DOKUWIKI_INSTALL_BLOCK DOKUWIKI_INSTALLED DOKUWIKI_URL_REWRITE_BLOCK

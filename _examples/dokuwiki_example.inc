@@ -22,6 +22,9 @@ SSLCLIENT_FASTCGI=""
 # IMPORTANT: Before installing, set this to empty. After, set to anything and recreate host
 DOKUWIKI_INSTALLED=""
 
+# Set to 0 (default), 1 or 2, according to the $conf['userewrite'] setting in conf/local.php
+DOKUWIKI_USEREWRITE="0"
+
 # Recommended defaults for dokuwiki
 CLIENT_MAX_BODY_SIZE="4M"
 CLIENT_BODY_TIMEOUT="60";
