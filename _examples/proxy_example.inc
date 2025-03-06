@@ -21,7 +21,7 @@ SSL_VERIFY_CLIENT="optional"
 SSLCLIENT_FASTCGI=""
 
 # Parameter for proxy_pass in / location. ONLY IN FRONTEND
-PROXY_PASS="192.168.55.105:8080"
+PROXY_PASS="http://192.168.55.105:8080"
 
 # Settings for several general options, to be overriden when necessary
 CLIENT_MAX_BODY_SIZE="512M" #   client_max_body_size 512M;
@@ -30,3 +30,6 @@ FASTCGI_BUFFERS="64 4K"     #   fastcgi_buffers 64 4K;
 
 # Set to any value if using websockets. Nextcloud recommends setting this
 USE_WEBSOCKET=""
+
+# Location of .well-known directory for certbot. Setting it will create a specific location entry
+#WELLKNOWN_DIR="/var/www/html"

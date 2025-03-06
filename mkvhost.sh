@@ -5,13 +5,14 @@ if [[ -z $@ ]];then exit 1; fi
 function initVars()
 {
 	# Variables to be unset at the beginning of each vhost. You can set vhost defaults in defaults.inc
-	unset SERVER SERVERNAME SUFFIX DOCROOT HTTP_PORT HTTP_ENV HTTPS_PORT HTTPS_ENV APP_ENV VHOST_TYPE
-	unset SSL_BLOCK CUSTOM_BLOCK PROXY_PASS SSLCLIENT_FASTCGI SERVER_BLOCK EXTRA_BLOCK
+	unset SERVER SERVERNAME SUFFIX DOCROOT HTTP_PORT HTTP_ENV HTTPS_PORT HTTPS_ENV APP_ENV VHOST_TYPE WELLKNOWN_DIR
+	unset SSL_BLOCK CUSTOM_BLOCK PROXY_PASS SSLCLIENT_FASTCGI SERVER_BLOCK EXTRA_BLOCK WELLKNOWN_BLOCK
 	unset LOGDIRFORMAT SSL_CERTIFICATE SSL_CERTIFICATE_KEY SSL_CLIENT_CERTIFICATE SSL_VERIFY_CLIENT
 	BASE_DIR='.'
 	TEMPLATES_DIR="${BASE_DIR}/_templates"
 	CONFS_DIR="${BASE_DIR}/_conf"
 	SNIPPETS_DIR="${BASE_DIR}/_snippets"
+	ACMECHALLENGE_DIR="/.well-known/acme-challenge"
 }
 
 function main()
@@ -50,6 +51,9 @@ function main()
 					rm ../sites-enabled/${SERVER} 2>/dev/null
 					ln -s ../sites-available/${SERVER} ../sites-enabled/
 					echo "Vhost ${VHOST} created, along with ${LOGDIR} and site-enabled symlink"
+					if [[ ${WELLKNOWN_DIR} ]];then
+						echo "Make sure ${WELLKNOWN_DIR}/${ACMECHALLENGE_DIR} exists and can be written by certbot"
+					fi
 				else
 					echo "Invalid VHOST_TYPE for ${VHOST}. Choose one of ${TEMPLATES_DIR}/<VHOST_TYPE>_template.inc"
 				fi
@@ -114,11 +118,21 @@ function processServers()
 	if [[ ${DEFAULT_HTTPS_PORT} != ${HTTPS_PORT} ]];then
 		URL_HTTPS_PORT=":${HTTPS_PORT}"
 	fi
+	if [[ ${WELLKNOWN_DIR} ]];then
+		WELLKNOWN_BLOCK="
+
+    # Block for acme-challenge with Letsencrypt
+    location ${ACMECHALLENGE_DIR}/ {
+        root ${WELLKNOWN_DIR};
+    }
+	"
+	fi
     REDIRECT_BLOCK="
 server {
     listen ${HTTP_PORT};
     listen [::]:${HTTP_PORT};
     server_name ${SERVERNAME:-${SERVER} ${SERVER}.${SUFFIX}};
+	${WELLKNOWN_BLOCK}
     # Prevent nginx HTTP Server Detection
     server_tokens off;
     return 301 https://\$server_name${URL_HTTPS_PORT}/\$request_uri;
@@ -130,7 +144,9 @@ server {
     listen [::]:${HTTP_PORT};"
     LISTEN_HTTPS_BLOCK="
     listen ${HTTPS_PORT} ssl http2;
-    listen [::]:${HTTPS_PORT};"
+    listen [::]:${HTTPS_PORT};
+	${WELLKNOWN_BLOCK}
+	"
     APP_ENV=""
     if [[ ${HTTP_ENV} ]];then
         APP_ENV="set \$app_env ${HTTP_ENV};"
