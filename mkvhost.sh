@@ -52,7 +52,7 @@ function main()
 					ln -s ../sites-available/${SERVER} ../sites-enabled/
 					echo "Vhost ${VHOST} created, along with ${LOGDIR} and site-enabled symlink"
 					if [[ ${WELLKNOWN_DIR} ]];then
-						echo "Make sure ${WELLKNOWN_DIR}/${ACMECHALLENGE_DIR} exists and can be written by certbot"
+						echo "Make sure ${WELLKNOWN_DIR}${ACMECHALLENGE_DIR} exists and can be written by certbot"
 					fi
 				else
 					echo "Invalid VHOST_TYPE for ${VHOST}. Choose one of ${TEMPLATES_DIR}/<VHOST_TYPE>_template.inc"
