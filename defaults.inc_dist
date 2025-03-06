@@ -16,7 +16,7 @@ getLogDirFormat()
 }
 
 # Location of .well-known for certbot. Setting it will create a specific location entry
-#WELLKNOWN="/var/www/html"
+#WELLKNOWN_DIR="/var/www/html"
 
 # Settings for several general options, to be overriden when necessary
 CLIENT_MAX_BODY_SIZE="512M" #   client_max_body_size 512M;
