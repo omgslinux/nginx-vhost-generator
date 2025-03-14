@@ -128,6 +128,22 @@ fi
 WORDPRESS_BLOCK="
     index index.php;
 
+# IMPORTANT: If your wordpress is behind a reverse proxy using https,
+# you may need to add this php snippet in your wp-config.php file,
+# right below the database settings:
+#
+#if (isset (\$_SERVER['HTTP_X_FORWARDED_PROTO'])){
+#//error_log (\$_SERVER['HTTP_X_FORWARDED_PROTO'] . \"\n\", 3, \"./http_log\");
+#        if (\$_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https'){
+#                \$_SERVER['HTTPS']='on';
+#                define('FORCE_SSL_ADMIN', true);
+#                define('FORCE_SSL_LOGIN', true);
+#                \$_SERVER['HTTP_HOST'] = \$_SERVER['HTTP_X_FORWARDED_HOST'];
+#                define('WP_SITEURL', 'https://${SERVER}.${SUFFIX}'); // Full website FQDN
+#                define('WP_HOME', 'https://${SERVER}.${SUFFIX}'); // Full website FQDN
+#        }
+#}
+
     ${WORDPRESS_SINGLESITE_BLOCK}
     ${WORDPRESS_MULTISITE_SUBDIR_BLOCK}
     ${WORDPPRESS_MULTISITE_SUBDOMAIN_BLOCK}
