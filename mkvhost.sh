@@ -48,9 +48,9 @@ function main()
 						fi
 					fi
 
-					rm ../sites-enabled/${SERVER} 2>/dev/null
-					ln -s ../sites-available/${SERVER} ../sites-enabled/
-					echo "Vhost ${VHOST} created, along with ${LOGDIR} and site-enabled symlink"
+					rm ../sites-enabled/${VHOST} 2>/dev/null
+					ln -s ../sites-available/${VHOST} ../sites-enabled/
+					echo "Vhost ${VHOST} created, along with ${LOGDIR} and sites-enabled symlink"
 					if [[ ${WELLKNOWN_DIR} ]];then
 						echo "Make sure ${WELLKNOWN_DIR}${ACMECHALLENGE_DIR} exists and can be written by certbot"
 					fi
