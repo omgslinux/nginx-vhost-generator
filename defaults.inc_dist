@@ -1,5 +1,8 @@
 SUFFIX="example.org"
 
+DEFAULT_HTTP_PORT=80
+DEFAULT_HTTPS_PORT=443
+
 # Usual setup for letsencrypt
 SSL_CERTIFICATE="/etc/letsencrypt/live/${VHOST}.${SUFFIX}/fullchain.pem"
 SSL_CERTIFICATE_KEY="/etc/letsencrypt/live/${VHOST}.${SUFFIX}/privkey.pem"
@@ -19,6 +22,9 @@ getLogDirFormat()
 #WELLKNOWN_DIR="/var/www/html"
 
 # Settings for several general options, to be overriden when necessary
-CLIENT_MAX_BODY_SIZE="512M" #   client_max_body_size 512M;
-CLIENT_BODY_TIMEOUT="300s"  #   client_body_timeout 300s;
-FASTCGI_BUFFERS="64 4K"     #   fastcgi_buffers 64 4K;
+#   client_max_body_size 512M;
+CLIENT_MAX_BODY_SIZE="512M"
+#   client_body_timeout 300s;
+CLIENT_BODY_TIMEOUT="300s"
+#   fastcgi_buffers 64 4K;
+FASTCGI_BUFFERS="64 4K"

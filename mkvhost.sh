@@ -108,8 +108,13 @@ server {
 
 function processServers()
 {
-	DEFAULT_HTTP_PORT="80"
-	DEFAULT_HTTPS_PORT="443"
+	if [[ -z ${DEFAULT_HTTP_PORT} ]];then
+		DEFAULT_HTTP_PORT="80"
+	fi
+	if [[ -z ${DEFAULT_HTTPS_PORT} ]];then
+		DEFAULT_HTTPS_PORT="443"
+	fi
+	
 	URL_HTTP_PORT=""
 	URL_HTTPS_PORT=""
 	if [[ ${DEFAULT_HTTP_PORT} != ${HTTP_PORT} ]];then
