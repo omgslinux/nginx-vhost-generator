@@ -23,5 +23,7 @@ ${CUSTOM_BLOCK}
 
 CUSTOM_BLOCK="${ODOO_BLOCK}"
 
+# To avoid static block, preventing css to load
+VHOST_TYPE="proxy"
 unset PROXY_LONGPOLLING LONGPOLLING_BLOCK
 unset ODOO_BLOCK
