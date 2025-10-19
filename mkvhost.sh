@@ -196,7 +196,7 @@ LISTEN_HTTP2=" http2;"
 if compare_nginx_version -ge 1.25.1;
 then
 	LISTEN_HTTP2=";
-	http2 on;"
+    http2 on;"
 fi
 
     LISTEN_HTTP_BLOCK="
