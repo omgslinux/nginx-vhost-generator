@@ -65,6 +65,53 @@ function main()
 
 }
 
+function compare_nginx_version() {
+    local operator="$1"
+    local target_version="$2"
+    local nginx_version_output
+    local nginx_version
+
+    # Obtener la versión de nginx
+    nginx_version_output=$(nginx -v 2>&1)
+
+    # Extraer la versión numérica
+    if [[ $nginx_version_output =~ nginx/([0-9]+\.[0-9]+\.[0-9]+) ]]; then
+        nginx_version="${BASH_REMATCH[1]}"
+    else
+        echo "Error: No se pudo detectar la versión de nginx" >&2
+        return 2
+    fi
+
+    # Comparar versiones usando sort -V
+    local sorted_versions
+    sorted_versions=$(printf "%s\n%s" "$nginx_version" "$target_version" | sort -V)
+
+    case "$operator" in
+        -lt) # less than
+            [[ "$nginx_version" = "$(echo "$sorted_versions" | head -n1)" ]] && [[ "$nginx_version" != "$target_version" ]]
+            ;;
+        -le) # less or equal
+            [[ "$nginx_version" = "$(echo "$sorted_versions" | head -n1)" ]] || [[ "$nginx_version" = "$target_version" ]]
+            ;;
+        -eq) # equal
+            [[ "$nginx_version" = "$target_version" ]]
+            ;;
+        -ge) # greater or equal
+            [[ "$target_version" = "$(echo "$sorted_versions" | head -n1)" ]] || [[ "$nginx_version" = "$target_version" ]]
+            ;;
+        -gt) # greater than
+            [[ "$target_version" = "$(echo "$sorted_versions" | head -n1)" ]] && [[ "$nginx_version" != "$target_version" ]]
+            ;;
+        -ne) # not equal
+            [[ "$nginx_version" != "$target_version" ]]
+            ;;
+        *)
+            echo "Error: Operador no válido. Use: -lt, -le, -eq, -ge, -gt, -ne" >&2
+            return 2
+            ;;
+    esac
+}
+
 function processServerBlock()
 {
 	STATICFILES_BLOCK=""
@@ -144,12 +191,20 @@ server {
 }
 "
 
+LISTEN_HTTP2=" http2;"
+# En nginx 1.25.1 se añade http2 y se elimina de listen
+if compare_nginx_version -ge 1.25.1;
+then
+	LISTEN_HTTP2=";
+	http2 on;"
+fi
+
     LISTEN_HTTP_BLOCK="
     listen ${HTTP_PORT};
     listen [::]:${HTTP_PORT};"
     LISTEN_HTTPS_BLOCK="
-    listen ${HTTPS_PORT} ssl;
-	http2 on;
+	${LISTEN_HTTPS_LINE}
+	listen ${HTTPS_PORT} ssl${LISTEN_HTTP2}
     listen [::]:${HTTPS_PORT};
 	${WELLKNOWN_BLOCK}
 	"
