@@ -114,7 +114,7 @@ function processServers()
 	if [[ -z ${DEFAULT_HTTPS_PORT} ]];then
 		DEFAULT_HTTPS_PORT="443"
 	fi
-	
+
 	URL_HTTP_PORT=""
 	URL_HTTPS_PORT=""
 	if [[ ${DEFAULT_HTTP_PORT} != ${HTTP_PORT} ]];then
@@ -148,7 +148,8 @@ server {
     listen ${HTTP_PORT};
     listen [::]:${HTTP_PORT};"
     LISTEN_HTTPS_BLOCK="
-    listen ${HTTPS_PORT} ssl http2;
+    listen ${HTTPS_PORT} ssl;
+	http2 on;
     listen [::]:${HTTPS_PORT};
 	${WELLKNOWN_BLOCK}
 	"
@@ -182,7 +183,7 @@ server {
 	${SSL_VERIFY_CLIENT:+ssl_verify_client ${SSL_VERIFY_CLIENT};}
 	# END CERT BLOCK
 
-	ssl_protocols        TLSv1 TLSv1.1 TLSv1.2;
+	ssl_protocols        TLSv1.2 TLSv1.3;
 	keepalive_timeout    70;
 	ssl_session_cache    shared:SSL:10m;
 	ssl_session_timeout  10m;
