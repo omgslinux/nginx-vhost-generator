@@ -192,7 +192,7 @@ server {
 "
 
 LISTEN_HTTP2=" http2;"
-# En nginx 1.25.1 se añade http2 y se elimina de listen
+# From nginx 1.25.1 on, http2 directive is added, and removed from listen directive
 if compare_nginx_version -ge 1.25.1;
 then
 	LISTEN_HTTP2=";
@@ -203,7 +203,6 @@ fi
     listen ${HTTP_PORT};
     listen [::]:${HTTP_PORT};"
     LISTEN_HTTPS_BLOCK="
-	${LISTEN_HTTPS_LINE}
 	listen ${HTTPS_PORT} ssl${LISTEN_HTTP2}
     listen [::]:${HTTPS_PORT};
 	${WELLKNOWN_BLOCK}
