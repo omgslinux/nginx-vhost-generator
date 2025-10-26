@@ -92,7 +92,7 @@ read -r -d '' COMMON_BLOCK << EOB
         access_log off;     # Optional: Don't log access to assets
     }
 
-    location ~ \.woff2?\$ {
+    location ~ \.(otf|woff2)?\$ {
         try_files \$uri ${NEXTCLOUD_DIR}/index.php\$request_uri;
         expires 7d;         # Cache-Control policy borrowed from '.htaccess'
         access_log off;     # Optional: Don't log access to assets
