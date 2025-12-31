@@ -16,7 +16,7 @@ PHP_BLOCK="
     }
 
     location ~ ^/index\.php(/|\$) {
-        fastcgi_pass \$upstream_php;
+        fastcgi_pass ${FASTCGI_PASS:-\$upstream_php};
         include snippets/fastcgi-php.conf;
 		${SSLCLIENT_FASTCGI:+include snippets/sslclient-fastcgi.conf;}
         ${EXTRA_INDEX_LOCATION_BLOCK}
