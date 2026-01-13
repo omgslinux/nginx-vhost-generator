@@ -15,7 +15,7 @@ PHP_BLOCK="
         try_files \$uri \$uri/ /index.php\$is_args\$args;
     }
 
-    location ~ ^/index\.php(/|\$) {
+    location ~ \.php\$ {
         fastcgi_pass ${FASTCGI_PASS:-\$upstream_php};
         include snippets/fastcgi-php.conf;
 		${SSLCLIENT_FASTCGI:+include snippets/sslclient-fastcgi.conf;}
