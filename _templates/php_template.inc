@@ -12,7 +12,7 @@ PHP_BLOCK="
 
     location / {
         # try to serve file directly, fallback to index.php
-        try_files \$uri /index.php\$is_args\$args;
+        try_files \$uri \$uri/ /index.php\$is_args\$args;
     }
 
     location ~ ^/index\.php(/|\$) {
@@ -22,11 +22,6 @@ PHP_BLOCK="
         ${EXTRA_INDEX_LOCATION_BLOCK}
     }
 
-    # pass PHP scripts to FastCGI server
-    #
-    location ~ \.php\$ {
-        return 404;
-    }
 "
 
 CUSTOM_BLOCK="${PHP_BLOCK}"
